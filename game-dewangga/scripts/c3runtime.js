@@ -3616,7 +3616,6 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.System.Acts.SetVar,
 		C3.Plugins.System.Cnds.For,
 		C3.Plugins.System.Exps.loopindex,
-		C3.Plugins.Browser.Acts.ConsoleLog,
 		C3.Plugins.System.Acts.CreateObject,
 		C3.Plugins.Sprite.Exps.Width,
 		C3.Plugins.Sprite.Exps.Height,
@@ -3660,6 +3659,7 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.System.Cnds.TriggerOnce,
 		C3.Plugins.Mouse.Cnds.OnObjectClicked,
 		C3.Plugins.Sprite.Cnds.IsVisible,
+		C3.ScriptsInEvents.EventSheet1_Event39_Act1,
 		C3.Plugins.System.Acts.StopLoop
 	];
 };
@@ -3811,11 +3811,6 @@ self.C3_ExpressionFuncs = [
 			const f5 = p._GetNode(5).GetBoundMethod();
 			return () => ((v0.GetValue() - 1) + ((((f1("i")) <= ((v2.GetValue() - 1)) ? 1 : 0)) ? (f3("i")) : ((((v4.GetValue() - 1) * 2) - f5("i")))));
 		},
-		p => {
-			const f0 = p._GetNode(0).GetBoundMethod();
-			const f1 = p._GetNode(1).GetBoundMethod();
-			return () => and(and(f0("i"), " "), f1("j"));
-		},
 		() => "game",
 		p => {
 			const v0 = p._GetNode(0).GetVar();
@@ -3900,32 +3895,11 @@ self.C3_ExpressionFuncs = [
 			const v0 = p._GetNode(0).GetVar();
 			return () => v0.GetValue();
 		},
-		p => {
-			const v0 = p._GetNode(0).GetVar();
-			const n1 = p._GetNode(1);
-			const n2 = p._GetNode(2);
-			return () => and((and(and(v0.GetValue(), " "), n1.ExpInstVar()) + " "), n2.ExpInstVar());
-		},
 		() => "k",
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			const v1 = p._GetNode(1).GetVar();
 			return () => (f0(v1.GetValue(), "|") - 1);
-		},
-		p => {
-			const f0 = p._GetNode(0).GetBoundMethod();
-			const f1 = p._GetNode(1).GetBoundMethod();
-			const v2 = p._GetNode(2).GetVar();
-			const f3 = p._GetNode(3).GetBoundMethod();
-			const f4 = p._GetNode(4).GetBoundMethod();
-			const f5 = p._GetNode(5).GetBoundMethod();
-			const v6 = p._GetNode(6).GetVar();
-			const f7 = p._GetNode(7).GetBoundMethod();
-			const f8 = p._GetNode(8).GetBoundMethod();
-			const f9 = p._GetNode(9).GetBoundMethod();
-			const v10 = p._GetNode(10).GetVar();
-			const f11 = p._GetNode(11).GetBoundMethod();
-			return () => ((((f0(f1(v2.GetValue(), f3("k"), "|"), 0, ",") + " ") + f4(f5(v6.GetValue(), f7("k"), "|"), 1, ",")) + " ") + f8(f9(v10.GetValue(), f11("k"), "|"), 2, ","));
 		},
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
@@ -3943,7 +3917,6 @@ self.C3_ExpressionFuncs = [
 			const f4 = p._GetNode(4).GetBoundMethod();
 			return () => f0(f1(f2(v3.GetValue(), f4("k"), "|"), 0, ","));
 		},
-		() => "found",
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			const f1 = p._GetNode(1).GetBoundMethod();
@@ -3970,24 +3943,6 @@ self.C3_ExpressionFuncs = [
 			const f2 = p._GetNode(2).GetBoundMethod();
 			const v3 = p._GetNode(3).GetVar();
 			const f4 = p._GetNode(4).GetBoundMethod();
-			const f5 = p._GetNode(5).GetBoundMethod();
-			const f6 = p._GetNode(6).GetBoundMethod();
-			const f7 = p._GetNode(7).GetBoundMethod();
-			const v8 = p._GetNode(8).GetVar();
-			const f9 = p._GetNode(9).GetBoundMethod();
-			const f10 = p._GetNode(10).GetBoundMethod();
-			const f11 = p._GetNode(11).GetBoundMethod();
-			const f12 = p._GetNode(12).GetBoundMethod();
-			const v13 = p._GetNode(13).GetVar();
-			const f14 = p._GetNode(14).GetBoundMethod();
-			return () => and((and((and("periksa x ", f0(f1(f2(v3.GetValue(), f4("i"), "|"), 1, ","))) + " y "), f5(f6(f7(v8.GetValue(), f9("i"), "|"), 0, ","))) + " nilai "), f10(f11(f12(v13.GetValue(), f14("i"), "|"), 2, ",")));
-		},
-		p => {
-			const f0 = p._GetNode(0).GetBoundMethod();
-			const f1 = p._GetNode(1).GetBoundMethod();
-			const f2 = p._GetNode(2).GetBoundMethod();
-			const v3 = p._GetNode(3).GetVar();
-			const f4 = p._GetNode(4).GetBoundMethod();
 			return () => f0(f1(f2(v3.GetValue(), f4("i"), "|"), 1, ","));
 		},
 		p => {
@@ -4006,13 +3961,11 @@ self.C3_ExpressionFuncs = [
 			const f4 = p._GetNode(4).GetBoundMethod();
 			return () => f0(f1(f2(v3.GetValue(), f4("i"), "|"), 2, ","));
 		},
-		() => "benar",
 		p => {
 			const v0 = p._GetNode(0).GetVar();
 			const n1 = p._GetNode(1);
 			return () => and((and("skor: ", v0.GetValue()) + "/"), n1.ExpObject());
 		},
-		() => "cekAtas",
 		p => {
 			const v0 = p._GetNode(0).GetVar();
 			const f1 = p._GetNode(1).GetBoundMethod();
@@ -4030,18 +3983,6 @@ self.C3_ExpressionFuncs = [
 			const v4 = p._GetNode(4).GetVar();
 			const f5 = p._GetNode(5).GetBoundMethod();
 			return () => (v0.GetValue() + f1(f2(f3(v4.GetValue(), f5("i"), "|"), 0, ",")));
-		},
-		p => {
-			const f0 = p._GetNode(0).GetBoundMethod();
-			const f1 = p._GetNode(1).GetBoundMethod();
-			const f2 = p._GetNode(2).GetBoundMethod();
-			const v3 = p._GetNode(3).GetVar();
-			const f4 = p._GetNode(4).GetBoundMethod();
-			const f5 = p._GetNode(5).GetBoundMethod();
-			const f6 = p._GetNode(6).GetBoundMethod();
-			const v7 = p._GetNode(7).GetVar();
-			const f8 = p._GetNode(8).GetBoundMethod();
-			return () => (((and(f0("i"), " ") + f1(f2(v3.GetValue(), f4("i"), "|"), 0, ",")) + " ") + f5(f6(v7.GetValue(), f8("i"), "|"), 1, ","));
 		}
 ];
 

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { 
+			height: 100%;
+			background-color: white;
+		)
+    </style>
+</head>
+<body>
+
+	<p id="soal">mattis rhoncus urna neque viverra justo nec ultrices dui sapien eget mi proin sed libero</p>
+
+	<form onSubmit="sendAnswer()">
+	  <label for="jawaban">Jawaban</label><br>
+	  <input type="text" id="jawaban" name="jawaban" value=""><br>
+	  <input type="submit">
+	</form> 
+	
+	<p id="warning"></p>
+	
+	<script>
+		function sendAnswer() {
+			event.preventDefault();
+		    const jawaban = document.getElementById("jawaban").value;
+			const warning = document.getElementById("warning");
+			
+			if(jawaban) {
+				parent.c3_callFunction("sendAnswer", [jawaban]);
+				warning.innerHTML = "Jawaban sedang dikirim";
+			}
+			else {
+				warning.innerHTML = "Isi jawabannya";
+			}
+		}
+
+		function setSoal(soal) {
+		  document.getElementById("soal").innerHTML = soal;
+		}
+	</script>
+</body>
+</html>

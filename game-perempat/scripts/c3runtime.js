@@ -3481,6 +3481,48 @@ lm,0,re,tm),{wrapX:"repeat",sampling,anisotropy});if(bm>0&&re>lm)this._bottomTex
 }
 
 {
+'use strict';const C3=self.C3;C3.Plugins.AJAX=class AJAXPlugin extends C3.SDKPluginBase{constructor(opts){super(opts)}Release(){super.Release()}};
+
+}
+
+{
+'use strict';const C3=self.C3;C3.Plugins.AJAX.Type=class AJAXType extends C3.SDKTypeBase{constructor(objectClass){super(objectClass)}Release(){super.Release()}OnCreate(){}};
+
+}
+
+{
+'use strict';const C3=self.C3;
+C3.Plugins.AJAX.Instance=class AJAXInstance extends C3.SDKInstanceBase{constructor(inst,properties){super(inst);this._lastData="";this._curTag="";this._progress=0;this._timeout=-1;this._nextRequestHeaders=new Map;this._nextReponseBinaryData=null;this._nextRequestOverrideMimeType="";this._nwjsFs=null;this._nwjsPath=null;this._nwjsAppFolder=null;this._isNWjs=this._runtime.GetExportType()==="nwjs";if(this._isNWjs){this._nwjsFs=require("fs");this._nwjsPath=require("path");const process=self["process"]||
+nw["process"];this._nwjsAppFolder=this._nwjsPath["dirname"](process["execPath"])+"\\"}}Release(){super.Release()}async _TriggerError(tag,url,err){console.error(`[Construct 3] AJAX request to '${url}' (tag '${tag}') failed: `,err);this._curTag=tag;await this.TriggerAsync(C3.Plugins.AJAX.Cnds.OnAnyError);await this.TriggerAsync(C3.Plugins.AJAX.Cnds.OnError)}async _TriggerComplete(tag){this._curTag=tag;await this.TriggerAsync(C3.Plugins.AJAX.Cnds.OnAnyComplete);await this.TriggerAsync(C3.Plugins.AJAX.Cnds.OnComplete)}async _OnProgress(tag,
+e){if(!e["lengthComputable"])return;this._progress=e["loaded"]/e["total"];this._curTag=tag;await this.TriggerAsync(C3.Plugins.AJAX.Cnds.OnProgress)}_OnError(tag,url,err){if(!this._isNWjs){this._TriggerError(tag,url,err);return}const fs=this._nwjsFs;const filePath=this._nwjsAppFolder+url;if(fs["existsSync"](filePath))fs["readFile"](filePath,{"encoding":"utf8"},(err2,data)=>{if(err2)this._TriggerError(tag,url,err2);else{this._lastData=data.replace(/\r\n/g,"\n");this._TriggerComplete(tag)}});else this._TriggerError(tag,
+url,err)}async _DoCordovaRequest(tag,file){const assetManager=this._runtime.GetAssetManager();const binaryData=this._nextReponseBinaryData;this._nextReponseBinaryData=null;try{if(binaryData){const buffer=await assetManager.CordovaFetchLocalFileAsArrayBuffer(file);binaryData.SetArrayBufferTransfer(buffer);this._lastData="";this._TriggerComplete(tag)}else{const data=await assetManager.CordovaFetchLocalFileAsText(file);this._lastData=data.replace(/\r\n/g,"\n");this._TriggerComplete(tag)}}catch(err){this._TriggerError(tag,
+file,err)}}_DoRequest(tag,url,method,data){return new Promise(resolve=>{const errorFunc=err=>{this._OnError(tag,url,err);resolve()};const binaryData=this._nextReponseBinaryData;this._nextReponseBinaryData=null;try{const request=new XMLHttpRequest;request.onreadystatechange=()=>{if(request.readyState===4){if(binaryData)this._lastData="";else this._lastData=(request.responseText||"").replace(/\r\n/g,"\n");if(request.status>=400)this._TriggerError(tag,url,request.status+request.statusText);else{const hasData=
+this._lastData.length||binaryData&&request.response instanceof ArrayBuffer;if((!this._isNWjs||hasData)&&!(!this._isNWjs&&request.status===0&&!hasData)){if(binaryData)binaryData.SetArrayBufferTransfer(request.response);this._TriggerComplete(tag)}}resolve()}};request.onerror=errorFunc;request.ontimeout=errorFunc;request.onabort=errorFunc;request["onprogress"]=e=>this._OnProgress(tag,e);request.open(method,url);if(this._timeout>=0&&typeof request["timeout"]!=="undefined")request["timeout"]=this._timeout;
+request.responseType=binaryData?"arraybuffer":"text";if(data&&!this._nextRequestHeaders.has("Content-Type"))if(typeof data!=="string")request["setRequestHeader"]("Content-Type","application/octet-stream");else request["setRequestHeader"]("Content-Type","application/x-www-form-urlencoded");for(const [header,value]of this._nextRequestHeaders)try{request["setRequestHeader"](header,value)}catch(err){console.error(`[Construct 3] AJAX: Failed to set header '${header}: ${value}': `,err)}this._nextRequestHeaders.clear();
+if(this._nextRequestOverrideMimeType){try{request["overrideMimeType"](this._nextRequestOverrideMimeType)}catch(err){console.error(`[Construct 3] AJAX: failed to override MIME type: `,err)}this._nextRequestOverrideMimeType=""}if(data)request.send(data);else request.send()}catch(err){errorFunc(err)}})}GetDebuggerProperties(){const prefix="plugins.ajax.debugger";return[{title:prefix+".title",properties:[{name:prefix+".last-data",value:this._lastData}]}]}SaveToJson(){return{"lastData":this._lastData}}LoadFromJson(o){this._lastData=
+o["lastData"];this._curTag="";this._progress=0}};
+
+}
+
+{
+'use strict';const C3=self.C3;C3.Plugins.AJAX.Cnds={OnComplete(tag){return C3.equalsNoCase(this._curTag,tag)},OnAnyComplete(){return true},OnError(tag){return C3.equalsNoCase(this._curTag,tag)},OnAnyError(){return true},OnProgress(tag){return C3.equalsNoCase(this._curTag,tag)}};
+
+}
+
+{
+'use strict';const C3=self.C3;
+C3.Plugins.AJAX.Acts={async Request(tag,url){if(this._runtime.IsCordova()&&C3.IsRelativeURL(url)&&this._runtime.GetAssetManager().IsFileProtocol())await this._DoCordovaRequest(tag,url);else if(this._runtime.IsPreview()&&C3.IsRelativeURL(url)){const localurl=this._runtime.GetAssetManager().GetLocalUrlAsBlobUrl(url.toLowerCase());await this._DoRequest(tag,localurl,"GET",null)}else await this._DoRequest(tag,url,"GET",null)},async RequestFile(tag,file){if(this._runtime.IsCordova()&&this._runtime.GetAssetManager().IsFileProtocol())await this._DoCordovaRequest(tag,
+file);else await this._DoRequest(tag,this._runtime.GetAssetManager().GetLocalUrlAsBlobUrl(file),"GET",null)},async Post(tag,url,data,method){await this._DoRequest(tag,url,method,data)},async PostBinary(tag,url,objectClass,method){if(!objectClass)return;const target=objectClass.GetFirstPicked(this._inst);if(!target)return;const sdkInst=target.GetSdkInstance();const buffer=sdkInst.GetArrayBufferReadOnly();await this._DoRequest(tag,url,method,buffer)},SetTimeout(t){this._timeout=t*1E3},SetHeader(n,v){this._nextRequestHeaders.set(n,
+v)},SetResponseBinary(objectClass){if(!objectClass)return;const inst=objectClass.GetFirstPicked(this._inst);if(!inst)return;this._nextReponseBinaryData=inst.GetSdkInstance()},OverrideMIMEType(m){this._nextRequestOverrideMimeType=m}};
+
+}
+
+{
+'use strict';const C3=self.C3;C3.Plugins.AJAX.Exps={LastData(){return this._lastData},Progress(){return this._progress},Tag(){return this._curTag}};
+
+}
+
+{
 'use strict';const C3=self.C3;C3.Behaviors.EightDir=class EightDirBehavior extends C3.SDKBehaviorBase{constructor(opts){super(opts)}Release(){super.Release()}};
 
 }
@@ -3715,6 +3757,7 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Mouse,
 		C3.Behaviors.Tween,
 		C3.Plugins.NinePatch,
+		C3.Plugins.AJAX,
 		C3.Behaviors.solid,
 		C3.Plugins.System.Cnds.OnLayoutStart,
 		C3.Plugins.System.Cnds.EveryTick,
@@ -3743,10 +3786,12 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.System.Cnds.Compare,
 		C3.Behaviors.EightDir.Exps.VectorX,
 		C3.Plugins.Sprite.Acts.SetMirrored,
+		C3.Plugins.iframe.Acts.DisplayHTMLString,
+		C3.ScriptsInEvents.Game_es_Event24_Act3,
 		C3.Plugins.Mouse.Cnds.IsOverObject,
 		C3.Plugins.Sprite.Exps.LayerName,
-		C3.Plugins.Spritefont2.Exps.LayerName,
-		C3.Plugins.Spritefont2.Cnds.IsBoolInstanceVarSet,
+		C3.ScriptsInEvents.Game_es_Event27_Act1,
+		C3.ScriptsInEvents.Game_es_Event28_Act1,
 		C3.Plugins.Spritefont2.Cnds.PickByUID,
 		C3.Plugins.Spritefont2.Acts.SetOpacity,
 		C3.Behaviors.Tween.Acts.TweenOneProperty,
@@ -3756,17 +3801,18 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Spritefont2.Exps.UID,
 		C3.Plugins.System.Acts.GoToLayout,
 		C3.Behaviors.Tween.Cnds.OnTweensFinished,
-		C3.Plugins.Spritefont2.Acts.Destroy
+		C3.Plugins.Spritefont2.Acts.Destroy,
+		C3.Plugins.AJAX.Acts.RequestFile,
+		C3.Plugins.AJAX.Exps.LastData
 	];
 };
 self.C3_JsPropNameTable = [
-	{Iframe: 0},
+	{game: 0},
 	{"8Direction": 0},
 	{ScrollTo: 0},
 	{Player: 0},
 	{Decorations: 0},
 	{id: 0},
-	{game: 0},
 	{posGame: 0},
 	{Pos: 0},
 	{UiText: 0},
@@ -3777,13 +3823,16 @@ self.C3_JsPropNameTable = [
 	{Tween: 0},
 	{StoryText: 0},
 	{confirmBackground: 0},
-	{clickable: 0},
-	{soalText: 0},
+	{soal: 0},
+	{AJAX: 0},
 	{Solid: 0},
 	{solid: 0},
 	{Z_Ordering: 0},
 	{link: 0},
+	{jawaban: 0},
+	{score: 0},
 	{storyProg: 0},
+	{soalHtmlContent: 0},
 	{uid: 0},
 	{duration: 0}
 ];
@@ -3887,7 +3936,7 @@ function or(l, r)
 
 self.C3_ExpressionFuncs = [
 		() => "konfirmasi",
-		() => "iframe",
+		() => "soalGame",
 		() => "soal",
 		() => "Game",
 		() => "UI",
@@ -3918,6 +3967,7 @@ self.C3_ExpressionFuncs = [
 			const n0 = p._GetNode(0);
 			return () => n0.ExpBehavior();
 		},
+		() => 0.05,
 		() => "fadeIn",
 		() => 100,
 		() => "fadeOut",
@@ -3927,7 +3977,12 @@ self.C3_ExpressionFuncs = [
 		() => "narasi 2",
 		() => 3,
 		() => "narasi 3",
-		() => 4
+		() => 4,
+		() => 0.5,
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			return () => f0();
+		}
 ];
 
 

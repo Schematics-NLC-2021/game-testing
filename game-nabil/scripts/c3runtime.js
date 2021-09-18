@@ -3419,10 +3419,10 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.System.Exps.tokenat,
 		C3.Plugins.Sprite.Acts.SetAnim,
 		C3.Plugins.Sprite.Acts.SetInstanceVar,
+		C3.Plugins.Sprite.Cnds.IsAnimPlaying,
 		C3.Plugins.Spritefont2.Cnds.CompareInstanceVar,
 		C3.Plugins.Spritefont2.Acts.SetText,
 		C3.Plugins.Mouse.Cnds.OnObjectClicked,
-		C3.Plugins.Sprite.Cnds.IsAnimPlaying,
 		C3.Plugins.System.Acts.AddVar,
 		C3.Plugins.Sprite.Exps.AnimationFrame,
 		C3.Plugins.System.Acts.SetVar,
@@ -3430,6 +3430,7 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.System.Cnds.Compare,
 		C3.Plugins.System.Cnds.PickAll,
 		C3.Plugins.Sprite.Exps.AnimationName,
+		C3.Plugins.System.Cnds.CompareVar,
 		C3.Plugins.System.Cnds.ForEach,
 		C3.Plugins.Sprite.Exps.UID,
 		C3.Plugins.System.Cnds.Else,
@@ -3437,8 +3438,9 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.System.Exps.tokencount,
 		C3.Plugins.Sprite.Cnds.CompareInstanceVar,
 		C3.Plugins.System.Acts.SetFunctionReturnValue,
-		C3.Plugins.System.Cnds.CompareVar,
-		C3.Plugins.System.Acts.SubVar
+		C3.Plugins.Sprite.Cnds.CompareFrame,
+		C3.Plugins.System.Acts.SubVar,
+		C3.ScriptsInEvents.EventSheet1_Event24_Act1
 	];
 };
 self.C3_JsPropNameTable = [
@@ -3452,7 +3454,7 @@ self.C3_JsPropNameTable = [
 	{Browser: 0},
 	{SoalGameBG: 0},
 	{scoreframe: 0},
-	{TombolReset: 0},
+	{Tombol: 0},
 	{startState: 0},
 	{Neighbours: 0},
 	{startX: 0},
@@ -3598,6 +3600,7 @@ self.C3_ExpressionFuncs = [
 			const f0 = p._GetNode(0).GetBoundMethod();
 			return () => f0("i");
 		},
+		() => "submit",
 		() => 1,
 		p => {
 			const v0 = p._GetNode(0).GetVar();
@@ -3626,6 +3629,7 @@ self.C3_ExpressionFuncs = [
 			const n0 = p._GetNode(0);
 			return () => ((((n0.ExpObject()) === ("Unpicked") ? 1 : 0)) ? ("Pickable") : ("Picked"));
 		},
+		() => 10,
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			const n1 = p._GetNode(1);
@@ -3658,7 +3662,8 @@ self.C3_ExpressionFuncs = [
 			const v4 = p._GetNode(4).GetVar();
 			const f5 = p._GetNode(5).GetBoundMethod();
 			return () => (v0.GetValue() + f1(f2(f3(v4.GetValue(), f5("i"), "|"), 1, ",")));
-		}
+		},
+		() => "reset"
 ];
 
 
