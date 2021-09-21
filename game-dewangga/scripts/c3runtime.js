@@ -3612,7 +3612,7 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.System.Cnds.OnLayoutStart,
 		C3.Plugins.Sprite.Acts.Destroy,
 		C3.Plugins.Spritefont2.Acts.Destroy,
-		C3.Plugins.Sprite.Acts.SetVisible,
+		C3.Plugins.Sprite.Acts.SetAnimFrame,
 		C3.Plugins.System.Acts.SetVar,
 		C3.Plugins.System.Cnds.For,
 		C3.Plugins.System.Exps.loopindex,
@@ -3623,16 +3623,15 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Sprite.Acts.SetInstanceVar,
 		C3.Plugins.Sprite.Exps.UID,
 		C3.Plugins.System.Cnds.Compare,
-		C3.Plugins.Sprite.Acts.SetAnimFrame,
 		C3.Plugins.Sprite.Acts.SetBoolInstanceVar,
 		C3.Plugins.System.Cnds.Else,
-		C3.Plugins.Spritefont2.Acts.SetText,
 		C3.Plugins.Spritefont2.Acts.SetInstanceVar,
 		C3.Plugins.Spritefont2.Acts.ZMoveToObject,
 		C3.Plugins.System.Cnds.PickByComparison,
 		C3.Plugins.Sprite.Exps.X,
 		C3.Plugins.Sprite.Exps.Y,
 		C3.Plugins.Sprite.Acts.AddChild,
+		C3.Plugins.Spritefont2.Acts.SetText,
 		C3.Plugins.System.Exps.tokenat,
 		C3.Plugins.Spritefont2.Cnds.CompareInstanceVar,
 		C3.Behaviors.DragnDrop.Cnds.OnDrop,
@@ -3650,17 +3649,19 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.System.Exps.tokencount,
 		C3.Plugins.System.Exps.int,
 		C3.Plugins.System.Acts.AddVar,
+		C3.Plugins.System.Acts.StopLoop,
 		C3.Plugins.Sprite.Acts.AddInstanceVar,
 		C3.Plugins.System.Cnds.CompareVar,
 		C3.Behaviors.DragnDrop.Cnds.OnDragStart,
+		C3.Plugins.Sprite.Acts.MoveToTop,
 		C3.Behaviors.MoveTo.Cnds.IsMoving,
 		C3.Behaviors.MoveTo.Acts.Stop,
+		C3.Plugins.Spritefont2.Acts.MoveToTop,
 		C3.Plugins.Sprite.Exps.Count,
 		C3.Plugins.System.Cnds.TriggerOnce,
 		C3.Plugins.Mouse.Cnds.OnObjectClicked,
-		C3.Plugins.Sprite.Cnds.IsVisible,
-		C3.ScriptsInEvents.EventSheet1_Event39_Act1,
-		C3.Plugins.System.Acts.StopLoop
+		C3.Behaviors.DragnDrop.Acts.SetEnabled,
+		C3.ScriptsInEvents.EventSheet1_Event40_Act1
 	];
 };
 self.C3_JsPropNameTable = [
@@ -3683,6 +3684,7 @@ self.C3_JsPropNameTable = [
 	{UI: 0},
 	{button: 0},
 	{Mouse: 0},
+	{background: 0},
 	{Side: 0},
 	{PuzzleStartX: 0},
 	{PuzzleStartY: 0},
@@ -3694,6 +3696,7 @@ self.C3_JsPropNameTable = [
 	{checkTop: 0},
 	{checkMiddle: 0},
 	{checkBottom: 0},
+	{gameFinished: 0},
 	{uid: 0}
 ];
 }
@@ -3842,7 +3845,6 @@ self.C3_ExpressionFuncs = [
 			return () => (v0.GetValue() - 1);
 		},
 		() => 1,
-		() => "",
 		p => {
 			const v0 = p._GetNode(0).GetVar();
 			const f1 = p._GetNode(1).GetBoundMethod();
@@ -3880,6 +3882,7 @@ self.C3_ExpressionFuncs = [
 			return () => f0(f1(v2.GetValue(), f3("m"), "|"), 1, ",");
 		},
 		() => 5,
+		() => "",
 		() => 2,
 		() => -100,
 		p => {
