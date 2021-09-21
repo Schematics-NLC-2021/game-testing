@@ -3523,6 +3523,136 @@ v)},SetResponseBinary(objectClass){if(!objectClass)return;const inst=objectClass
 }
 
 {
+'use strict';const C3=self.C3;C3.Plugins.Dictionary=class DictionaryPlugin extends C3.SDKPluginBase{constructor(opts){super(opts)}Release(){super.Release()}};
+
+}
+
+{
+'use strict';const C3=self.C3;C3.Plugins.Dictionary.Type=class DictionaryType extends C3.SDKTypeBase{constructor(objectClass){super(objectClass)}Release(){super.Release()}OnCreate(){}};
+
+}
+
+{
+'use strict';const C3=self.C3;const C3X=self.C3X;const IInstance=self.IInstance;
+C3.Plugins.Dictionary.Instance=class DictionaryInstance extends C3.SDKInstanceBase{constructor(inst,properties){super(inst);this._data=new Map;this._curKey=""}Release(){this._data.clear();super.Release()}GetAsJsonString(){return JSON.stringify({"c2dictionary":true,"data":C3.MapToObject(this._data)})}GetDataMap(){return this._data}SaveToJson(){return C3.MapToObject(this._data)}LoadFromJson(o){C3.ObjectToMap(o,this._data)}GetDebuggerProperties(){const prefix="plugins.dictionary";return[{title:prefix+
+".name",properties:[{name:prefix+".debugger.key-count",value:this._data.size},...[...this._data].map(entry=>({name:"$"+entry[0],value:entry[1],onedit:v=>this._data.set(entry[0],v)}))]}]}GetScriptInterfaceClass(){return self.IDictionaryInstance}};const map=new WeakMap;self.IDictionaryInstance=class IDictionaryInstance extends IInstance{constructor(){super();map.set(this,IInstance._GetInitInst().GetSdkInstance())}getDataMap(){return map.get(this).GetDataMap()}};
+
+}
+
+{
+'use strict';const C3=self.C3;
+C3.Plugins.Dictionary.Cnds={CompareValue(key,cmp,val){const x=this._data.get(key);if(typeof x==="undefined")return false;return C3.compare(x,cmp,val)},ForEachKey(){const runtime=this._runtime;const eventSheetManager=runtime.GetEventSheetManager();const currentEvent=runtime.GetCurrentEvent();const solModifiers=currentEvent.GetSolModifiers();const eventStack=runtime.GetEventStack();const oldFrame=eventStack.GetCurrentStackFrame();const newFrame=eventStack.Push(currentEvent);runtime.SetDebuggingEnabled(false);
+for(const key of this._data.keys()){this._curKey=key;eventSheetManager.PushCopySol(solModifiers);currentEvent.Retrigger(oldFrame,newFrame);eventSheetManager.PopSol(solModifiers)}runtime.SetDebuggingEnabled(true);this._curKey="";eventStack.Pop();return false},CompareCurrentValue(cmp,val){const x=this._data.get(this._curKey);if(typeof x==="undefined")return false;return C3.compare(x,cmp,val)},HasKey(key){return this._data.has(key)},IsEmpty(){return this._data.size===0}};
+
+}
+
+{
+'use strict';const C3=self.C3;
+C3.Plugins.Dictionary.Acts={AddKey(key,value){this._data.set(key,value)},SetKey(key,value){if(this._data.has(key))this._data.set(key,value)},DeleteKey(key){this._data.delete(key)},Clear(){this._data.clear()},JSONLoad(json){let o=null;try{o=JSON.parse(json)}catch(err){console.error("[Construct 3] Error parsing JSON: ",err);return}if(!o["c2dictionary"])return;C3.ObjectToMap(o["data"],this._data)},JSONDownload(filename){const url=URL.createObjectURL(new Blob([this.GetAsJsonString()],{type:"application/json"}));
+this._runtime.InvokeDownload(url,filename)}};
+
+}
+
+{
+'use strict';const C3=self.C3;C3.Plugins.Dictionary.Exps={Get(key){const ret=this._data.get(key);if(typeof ret==="undefined")return 0;else return ret},GetDefault(key,defaultValue){const ret=this._data.get(key);if(typeof ret==="undefined")return defaultValue;else return ret},KeyCount(){return this._data.size},CurrentKey(){return this._curKey},CurrentValue(){return this._data.get(this._curKey)||0},AsJSON(){return this.GetAsJsonString()}};
+
+}
+
+{
+'use strict';const C3=self.C3;C3.Plugins.Date=class DatePlugin extends C3.SDKPluginBase{constructor(opts){super(opts)}Release(){super.Release()}};
+
+}
+
+{
+'use strict';const C3=self.C3;C3.Plugins.Date.Type=class DateType extends C3.SDKTypeBase{constructor(objectClass){super(objectClass)}Release(){super.Release()}OnCreate(){}};
+
+}
+
+{
+'use strict';const C3=self.C3;C3.Plugins.Date.Instance=class DateInstance extends C3.SDKInstanceBase{constructor(inst,properties){super(inst)}};
+
+}
+
+{
+'use strict';const C3=self.C3;const getters=[];getters[0]=[ts=>C3.Plugins.Date.Exps.GetYear(ts),ts=>C3.Plugins.Date.Exps.GetMonth(ts),ts=>C3.Plugins.Date.Exps.GetDate(ts),ts=>C3.Plugins.Date.Exps.GetDay(ts),ts=>C3.Plugins.Date.Exps.GetHours(ts),ts=>C3.Plugins.Date.Exps.GetMinutes(ts),ts=>C3.Plugins.Date.Exps.GetSeconds(ts),ts=>C3.Plugins.Date.Exps.GetMilliseconds(ts)];
+getters[1]=[ts=>C3.Plugins.Date.Exps.GetUTCYear(ts),ts=>C3.Plugins.Date.Exps.GetUTCMonth(ts),ts=>C3.Plugins.Date.Exps.GetUTCDate(ts),ts=>C3.Plugins.Date.Exps.GetUTCDay(ts),ts=>C3.Plugins.Date.Exps.GetUTCHours(ts),ts=>C3.Plugins.Date.Exps.GetUTCMinutes(ts),ts=>C3.Plugins.Date.Exps.GetUTCSeconds(ts),ts=>C3.Plugins.Date.Exps.GetUTCMilliseconds(ts)];const parse=dateString=>C3.Plugins.Date.Exps.Parse(dateString);
+C3.Plugins.Date.Cnds={CompareTimeStamps(first,cmp,second){return C3.compare(first,cmp,second)},CompareDateStrings(first,cmp,second){return C3.compare(parse(first),cmp,parse(second))},CompareTimestampParts(first,cmp,second,part){return C3.compare(getters[1][part](first),cmp,getters[1][part](second))},CompareDateStringParts(first,cmp,second,part,mode){return C3.compare(getters[mode][part](parse(first)),cmp,getters[mode][part](parse(second)))}};
+
+}
+
+{
+'use strict';const C3=self.C3;C3.Plugins.Date.Acts={};
+
+}
+
+{
+'use strict';const C3=self.C3;const getters=new Map;getters.set("local",new Map([["year",ts=>(new Date(ts)).getFullYear()],["month",ts=>(new Date(ts)).getMonth()],["date",ts=>(new Date(ts)).getDate()],["day",ts=>(new Date(ts)).getDay()],["hours",ts=>(new Date(ts)).getHours()],["minutes",ts=>(new Date(ts)).getMinutes()],["seconds",ts=>(new Date(ts)).getSeconds()],["milliseconds",ts=>(new Date(ts)).getMilliseconds()]]));
+getters.set("universal",new Map([["year",ts=>(new Date(ts)).getUTCFullYear()],["month",ts=>(new Date(ts)).getUTCMonth()],["date",ts=>(new Date(ts)).getUTCDate()],["day",ts=>(new Date(ts)).getUTCDay()],["hours",ts=>(new Date(ts)).getUTCHours()],["minutes",ts=>(new Date(ts)).getUTCMinutes()],["seconds",ts=>(new Date(ts)).getUTCSeconds()],["milliseconds",ts=>(new Date(ts)).getUTCMilliseconds()]]));const setters=new Map;
+setters.set("local",new Map([["year",(ts,year)=>(new Date(ts)).setFullYear(year)],["month",(ts,month)=>(new Date(ts)).setMonth(month)],["date",(ts,date)=>(new Date(ts)).setDate(date)],["hours",(ts,hours)=>(new Date(ts)).setHours(hours)],["minutes",(ts,minutes)=>(new Date(ts)).setMinutes(minutes)],["seconds",(ts,seconds)=>(new Date(ts)).setSeconds(seconds)],["milliseconds",(ts,milliseconds)=>(new Date(ts)).setMilliseconds(milliseconds)]]));
+setters.set("universal",new Map([["year",(ts,year)=>(new Date(ts)).setUTCFullYear(year)],["month",(ts,month)=>(new Date(ts)).setUTCMonth(month)],["date",(ts,date)=>(new Date(ts)).setUTCDate(date)],["hours",(ts,hours)=>(new Date(ts)).setUTCHours(hours)],["minutes",(ts,minutes)=>(new Date(ts)).setUTCMinutes(minutes)],["seconds",(ts,seconds)=>(new Date(ts)).setUTCSeconds(seconds)],["milliseconds",(ts,milliseconds)=>(new Date(ts)).setUTCMilliseconds(milliseconds)]]));
+C3.Plugins.Date.Exps={ToString(timeStamp){return(new Date(timeStamp)).toString()},ToDateString(timeStamp){return(new Date(timeStamp)).toDateString()},ToTimeString(timeStamp){return(new Date(timeStamp)).toTimeString()},ToLocaleString(timeStamp){return(new Date(timeStamp)).toLocaleString()},ToLocaleDateString(timeStamp){return(new Date(timeStamp)).toLocaleDateString()},ToLocaleTimeString(timeStamp){return(new Date(timeStamp)).toLocaleTimeString()},ToUTCString(timeStamp){return(new Date(timeStamp)).toUTCString()},
+Parse(dateString){return Date.parse(dateString)},Get(year,month,day,hours,minutes,seconds,milliseconds){return Date.UTC(year,month,day,hours,minutes,seconds,milliseconds)},Now(){return Date.now()},TimezoneOffset(){return(new Date(Date.now())).getTimezoneOffset()},GetYear(timeStamp){return getters.get("local").get("year")(timeStamp)},GetUTCYear(timeStamp){return getters.get("universal").get("year")(timeStamp)},GetMonth(timeStamp){return getters.get("local").get("month")(timeStamp)},GetUTCMonth(timeStamp){return getters.get("universal").get("month")(timeStamp)},
+GetDate(timeStamp){return getters.get("local").get("date")(timeStamp)},GetUTCDate(timeStamp){return getters.get("universal").get("date")(timeStamp)},GetDay(timeStamp){return getters.get("local").get("day")(timeStamp)},GetUTCDay(timeStamp){return getters.get("universal").get("day")(timeStamp)},GetHours(timeStamp){return getters.get("local").get("hours")(timeStamp)},GetUTCHours(timeStamp){return getters.get("universal").get("hours")(timeStamp)},GetMinutes(timeStamp){return getters.get("local").get("minutes")(timeStamp)},
+GetUTCMinutes(timeStamp){return getters.get("universal").get("minutes")(timeStamp)},GetSeconds(timeStamp){return getters.get("local").get("seconds")(timeStamp)},GetUTCSeconds(timeStamp){return getters.get("universal").get("seconds")(timeStamp)},GetMilliseconds(timeStamp){return getters.get("local").get("milliseconds")(timeStamp)},GetUTCMilliseconds(timeStamp){return getters.get("universal").get("milliseconds")(timeStamp)},ChangeYear(timeStamp,year){return setters.get("local").get("year")(timeStamp,
+year)},ChangeUTCYear(timeStamp,year){return setters.get("universal").get("year")(timeStamp,year)},ChangeMonth(timeStamp,month){return setters.get("local").get("month")(timeStamp,month)},ChangeUTCMonth(timeStamp,month){return setters.get("universal").get("month")(timeStamp,month)},ChangeDate(timeStamp,date){return setters.get("local").get("date")(timeStamp,date)},ChangeUTCDate(timeStamp,date){return setters.get("universal").get("date")(timeStamp,date)},ChangeDay(timeStamp,targetDay){const year=C3.Plugins.Date.Exps.GetYear(timeStamp);
+const month=C3.Plugins.Date.Exps.GetMonth(timeStamp);const date=C3.Plugins.Date.Exps.GetDate(timeStamp);const hours=C3.Plugins.Date.Exps.GetHours(timeStamp);const minutes=C3.Plugins.Date.Exps.GetMinutes(timeStamp);const seconds=C3.Plugins.Date.Exps.GetSeconds(timeStamp);const milliseconds=C3.Plugins.Date.Exps.GetMilliseconds(timeStamp);const currentDay=C3.Plugins.Date.Exps.GetDay(timeStamp);const distance=targetDay-currentDay;return(new Date(year,month,date+distance,hours,minutes,seconds,milliseconds)).getTime()},
+ChangeUTCDay(timeStamp,targetDay){const year=C3.Plugins.Date.Exps.GetUTCYear(timeStamp);const month=C3.Plugins.Date.Exps.GetUTCMonth(timeStamp);const date=C3.Plugins.Date.Exps.GetUTCDate(timeStamp);const hours=C3.Plugins.Date.Exps.GetUTCHours(timeStamp);const minutes=C3.Plugins.Date.Exps.GetUTCMinutes(timeStamp);const seconds=C3.Plugins.Date.Exps.GetUTCSeconds(timeStamp);const milliseconds=C3.Plugins.Date.Exps.GetUTCMilliseconds(timeStamp);const currentDay=C3.Plugins.Date.Exps.GetUTCDay(timeStamp);
+const distance=targetDay-currentDay;return C3.Plugins.Date.Exps.Get(year,month,date+distance,hours,minutes,seconds,milliseconds)},ChangeHours(timeStamp,hours){return setters.get("local").get("hours")(timeStamp,hours)},ChangeUTCHours(timeStamp,hours){return setters.get("universal").get("hours")(timeStamp,hours)},ChangeMinutes(timeStamp,minutes){return setters.get("local").get("minutes")(timeStamp,minutes)},ChangeUTCMinutes(timeStamp,minutes){return setters.get("universal").get("minutes")(timeStamp,
+minutes)},ChangeSeconds(timeStamp,seconds){return setters.get("local").get("seconds")(timeStamp,seconds)},ChangeUTCSeconds(timeStamp,seconds){return setters.get("universal").get("seconds")(timeStamp,seconds)},ChangeMilliseconds(timeStamp,milliseconds){return setters.get("local").get("milliseconds")(timeStamp,milliseconds)},ChangeUTCMilliseconds(timeStamp,milliseconds){return setters.get("universal").get("milliseconds")(timeStamp,milliseconds)},Difference(firstTimeStamp,secondTimeStamp){return secondTimeStamp-
+firstTimeStamp},ToTimerHours(milliseconds){return Math.trunc(C3.Plugins.Date.Exps.ToTotalHours(milliseconds))},ToTimerMinutes(milliseconds){return Math.trunc(C3.Plugins.Date.Exps.ToTotalMinutes(milliseconds))%60},ToTimerSeconds(milliseconds){return Math.trunc(C3.Plugins.Date.Exps.ToTotalSeconds(milliseconds))%60},ToTimerMilliseconds(milliseconds){return milliseconds%1E3},ToTotalHours(milliseconds){return milliseconds/(1E3*60*60)},ToTotalMinutes(milliseconds){return milliseconds/(1E3*60)},ToTotalSeconds(milliseconds){return milliseconds/
+1E3}};
+
+}
+
+{
+'use strict';const C3=self.C3;C3.Plugins.Browser=class BrowserPlugin extends C3.SDKPluginBase{constructor(opts){super(opts)}Release(){super.Release()}};
+
+}
+
+{
+'use strict';const C3=self.C3;C3.Plugins.Browser.Type=class BrowserType extends C3.SDKTypeBase{constructor(objectClass){super(objectClass)}Release(){super.Release()}OnCreate(){}};
+
+}
+
+{
+'use strict';const C3=self.C3;const DOM_COMPONENT_ID="browser";
+C3.Plugins.Browser.Instance=class BrowserInstance extends C3.SDKInstanceBase{constructor(inst,properties){super(inst,DOM_COMPONENT_ID);this._initLocationStr="";this._isOnline=false;this._referrer="";this._docTitle="";this._isCookieEnabled=false;this._screenWidth=0;this._screenHeight=0;this._windowOuterWidth=0;this._windowOuterHeight=0;this._isScirraArcade=false;this.AddDOMMessageHandlers([["online-state",e=>this._OnOnlineStateChanged(e)],["backbutton",()=>this._OnBackButton()],["sw-message",e=>this._OnSWMessage(e)],
+["hashchange",e=>this._OnHashChange(e)]]);const rt=this.GetRuntime().Dispatcher();this._disposables=new C3.CompositeDisposable(C3.Disposable.From(rt,"afterfirstlayoutstart",()=>this._OnAfterFirstLayoutStart()),C3.Disposable.From(rt,"window-resize",()=>this._OnWindowResize()),C3.Disposable.From(rt,"suspend",()=>this._OnSuspend()),C3.Disposable.From(rt,"resume",()=>this._OnResume()));this._runtime.AddLoadPromise(this.PostToDOMAsync("get-initial-state",{"exportType":this._runtime.GetExportType()}).then(data=>
+{this._initLocationStr=data["location"];this._isOnline=data["isOnline"];this._referrer=data["referrer"];this._docTitle=data["title"];this._isCookieEnabled=data["isCookieEnabled"];this._screenWidth=data["screenWidth"];this._screenHeight=data["screenHeight"];this._windowOuterWidth=data["windowOuterWidth"];this._windowOuterHeight=data["windowOuterHeight"];this._isScirraArcade=data["isScirraArcade"]}))}Release(){super.Release()}_OnAfterFirstLayoutStart(){this.PostToDOM("ready-for-sw-messages")}async _OnOnlineStateChanged(e){const isOnline=
+!!e["isOnline"];if(this._isOnline===isOnline)return;this._isOnline=isOnline;if(this._isOnline)await this.TriggerAsync(C3.Plugins.Browser.Cnds.OnOnline);else await this.TriggerAsync(C3.Plugins.Browser.Cnds.OnOffline)}async _OnWindowResize(){await this.TriggerAsync(C3.Plugins.Browser.Cnds.OnResize)}_OnSuspend(){this.Trigger(C3.Plugins.Browser.Cnds.OnPageHidden)}_OnResume(){this.Trigger(C3.Plugins.Browser.Cnds.OnPageVisible)}async _OnBackButton(){await this.TriggerAsync(C3.Plugins.Browser.Cnds.OnBackButton)}_OnSWMessage(e){const messageType=
+e["type"];if(messageType==="downloading-update")this.Trigger(C3.Plugins.Browser.Cnds.OnUpdateFound);else if(messageType==="update-ready"||messageType==="update-pending")this.Trigger(C3.Plugins.Browser.Cnds.OnUpdateReady);else if(messageType==="offline-ready")this.Trigger(C3.Plugins.Browser.Cnds.OnOfflineReady)}_OnHashChange(e){this._initLocationStr=e["location"];this.Trigger(C3.Plugins.Browser.Cnds.OnHashChange)}GetDebuggerProperties(){const prefix="plugins.browser.debugger";return[{title:"plugins.browser.name",
+properties:[{name:prefix+".user-agent",value:navigator.userAgent},{name:prefix+".is-online",value:this._isOnline},{name:prefix+".is-fullscreen",value:this._runtime.GetCanvasManager().IsDocumentFullscreen()}]}]}};
+
+}
+
+{
+'use strict';const C3=self.C3;
+C3.Plugins.Browser.Cnds={IsOnline(){return this._isOnline},OnOnline(){return true},OnOffline(){return true},OnResize(){return true},CookiesEnabled(){return this._isCookieEnabled},IsFullscreen(){return this._runtime.GetCanvasManager().IsDocumentFullscreen()},OnBackButton(){return true},IsPortraitLandscape(p){const lastInnerWidth=this._runtime.GetCanvasManager().GetLastWidth();const lastInnerHeight=this._runtime.GetCanvasManager().GetLastHeight();const current=lastInnerWidth<=lastInnerHeight?0:1;return current===
+p},OnUpdateFound(){return true},OnUpdateReady(){return true},OnOfflineReady(){return true},OnHashChange(){return true},PageVisible(){return!this._runtime.IsSuspended()},OnPageHidden(){return true},OnPageVisible(){return true},HasJava(){return false},IsDownloadingUpdate(){return false},OnMenuButton(){return false},OnSearchButton(){return false},IsMetered(){return false},IsCharging(){return true},SupportsFullscreen(){return true}};
+
+}
+
+{
+'use strict';const C3=self.C3;const ORIENTATIONS=["portrait","landscape","portrait-primary","portrait-secondary","landscape-primary","landscape-secondary"];
+C3.Plugins.Browser.Acts={Alert(message){this.PostToDOM("alert",{"message":message.toString()})},Close(){if(this._isScirraArcade)return;if(this._runtime.IsDebug())self.C3Debugger.CloseWindow();else this.PostToDOM("close")},Focus(){this.PostToDOM("set-focus",{"isFocus":true})},Blur(){this.PostToDOM("set-focus",{"isFocus":false})},GoBack(){if(this._isScirraArcade)return;this.PostToDOM("navigate",{"type":"back"})},GoForward(){if(this._isScirraArcade)return;this.PostToDOM("navigate",{"type":"forward"})},
+GoHome(){},Reload(){if(this._isScirraArcade)return;if(this._runtime.IsDebug())this._runtime.PostToDebugger({"type":"reload"});else this.PostToDOM("navigate",{"type":"reload"})},GoToURL(url,target){this._PostToDOMMaybeSync("navigate",{"type":"url","url":url,"target":target,"exportType":this._runtime.GetExportType()})},GoToURLWindow(url,tag){this._PostToDOMMaybeSync("navigate",{"type":"new-window","url":url,"tag":tag,"exportType":this._runtime.GetExportType()})},RequestFullScreen(mode,navUi){if(mode>=
+2)mode+=1;if(mode===6)mode=2;if(mode===1)mode=0;const modeStr=C3.CanvasManager._FullscreenModeNumberToString(mode);this._runtime.GetCanvasManager().SetDocumentFullscreenMode(modeStr);this._PostToDOMMaybeSync("request-fullscreen",{"navUI":navUi})},CancelFullScreen(){this._PostToDOMMaybeSync("exit-fullscreen")},Vibrate(pattern){const arr=pattern.split(",");for(let i=0,len=arr.length;i<len;++i)arr[i]=parseInt(arr[i],10);this._PostToDOMMaybeSync("vibrate",{"pattern":arr})},async InvokeDownload(url,filename){if(!url||
+!filename)return;const urlToDownload=await this._runtime.GetAssetManager().GetProjectFileUrl(url);this._runtime.InvokeDownload(urlToDownload,filename)},InvokeDownloadString(str,mimeType,filename){if(!filename)return;const dataUri=`data:${mimeType},${encodeURIComponent(str)}`;this._runtime.InvokeDownload(dataUri,filename)},ConsoleLog(type,msg){msg=msg.toString();if(type===0)console.log(msg);else if(type===1)console.warn(msg);else if(type===2)console.error(msg)},ConsoleGroup(name){console.group(name)},
+ConsoleGroupEnd(){console.groupEnd()},ExecJs(jsStr){try{eval(jsStr)}catch(err){console.error("Error executing JavaScript: ",err)}},LockOrientation(o){o=Math.floor(o);if(o<0||o>=ORIENTATIONS.length)return;const orientation=ORIENTATIONS[o];this._PostToDOMMaybeSync("lock-orientation",{"orientation":orientation})},UnlockOrientation(){this._PostToDOMMaybeSync("unlock-orientation")},LoadStyleSheet(url){this._runtime.GetAssetManager().LoadStyleSheet(url)},SetHash(h){this.PostToDOM("set-hash",{"hash":h})}};
+
+}
+
+{
+'use strict';const C3=self.C3;
+C3.Plugins.Browser.Exps={URL(){if(this._runtime.IsInWorker())return this._initLocationStr;else return location.toString()},Protocol(){if(this._runtime.IsInWorker())return(new URL(this._initLocationStr)).protocol;else return location.protocol},Domain(){if(this._runtime.IsInWorker())return(new URL(this._initLocationStr)).hostname;else return location.hostname},Port(){if(this._runtime.IsInWorker())return(new URL(this._initLocationStr)).port;else return location.port},PathName(){if(this._runtime.IsInWorker())return(new URL(this._initLocationStr)).pathname;else return location.pathname},
+Hash(){if(this._runtime.IsInWorker())return(new URL(this._initLocationStr)).hash;else return location.hash},QueryString(){if(this._runtime.IsInWorker())return(new URL(this._initLocationStr)).search;else return location.search},QueryParam(param){const search=this._runtime.IsInWorker()?(new URL(this._initLocationStr)).search:location.search;const match=RegExp("[?&]"+param+"=([^&]*)").exec(search);if(match)return decodeURIComponent(match[1].replace(/\+/g," "));else return""},Referrer(){return this._referrer},
+Title(){return this._docTitle},Language(){return navigator.language},Platform(){return navigator.platform},UserAgent(){return navigator.userAgent},ExecJS(jsStr){let result=0;try{result=eval(jsStr)}catch(err){console.error("Error executing JavaScript: ",err)}if(typeof result==="number"||typeof result==="string")return result;if(typeof result==="boolean")return result?1:0;else return 0},Name(){return navigator.appName},Version(){return navigator.appVersion},Product(){return navigator.product},Vendor(){return navigator.vendor},
+BatteryLevel(){return 1},BatteryTimeLeft(){return Infinity},Bandwidth(){const connection=navigator["connection"];if(connection)return connection["downlink"]||connection["downlinkMax"]||connection["bandwidth"]||Infinity;else return Infinity},ConnectionType(){const connection=navigator["connection"];if(connection)return connection["type"]||"unknown";else return"unknown"},DevicePixelRatio(){return self.devicePixelRatio},ScreenWidth(){return this._screenWidth},ScreenHeight(){return this._screenHeight},
+WindowInnerWidth(){return this._runtime.GetCanvasManager().GetLastWidth()},WindowInnerHeight(){return this._runtime.GetCanvasManager().GetLastHeight()},WindowOuterWidth(){return this._windowOuterWidth},WindowOuterHeight(){return this._windowOuterWidth}};
+
+}
+
+{
 'use strict';const C3=self.C3;C3.Behaviors.EightDir=class EightDirBehavior extends C3.SDKBehaviorBase{constructor(opts){super(opts)}Release(){super.Release()}};
 
 }
@@ -3605,6 +3735,41 @@ this._runtime.Random()*Math.PI*2;const d=this._runtime.Random()*mag;offX=Math.co
 
 {
 'use strict';const C3=self.C3;C3.Behaviors.scrollto.Exps={};
+
+}
+
+{
+'use strict';const C3=self.C3;C3.Behaviors.Timer=class TimerBehavior extends C3.SDKBehaviorBase{constructor(opts){super(opts)}Release(){super.Release()}};
+
+}
+
+{
+'use strict';const C3=self.C3;C3.Behaviors.Timer.Type=class TimerType extends C3.SDKBehaviorTypeBase{constructor(behaviorType){super(behaviorType)}Release(){super.Release()}OnCreate(){}};
+
+}
+
+{
+'use strict';const C3=self.C3;
+C3.Behaviors.Timer.SingleTimer=class SingleTimer{constructor(current,total,duration,isRegular){this._current=C3.New(C3.KahanSum);this._current.Set(current||0);this._total=C3.New(C3.KahanSum);this._total.Set(total||0);this._duration=duration||0;this._isRegular=!!isRegular;this._isPaused=false}GetCurrentTime(){return this._current.Get()}GetTotalTime(){return this._total.Get()}GetDuration(){return this._duration}SetPaused(p){this._isPaused=!!p}IsPaused(){return this._isPaused}Add(t){this._current.Add(t);this._total.Add(t)}HasFinished(){return this._current.Get()>=
+this._duration}Update(){if(this.HasFinished())if(this._isRegular)this._current.Subtract(this._duration);else return true;return false}SaveToJson(){return{"c":this._current.Get(),"t":this._total.Get(),"d":this._duration,"r":this._isRegular,"p":this._isPaused}}LoadFromJson(o){this._current.Set(o["c"]);this._total.Set(o["t"]);this._duration=o["d"];this._isRegular=!!o["r"];this._isPaused=!!o["p"]}};
+C3.Behaviors.Timer.Instance=class TimerInstance extends C3.SDKBehaviorInstanceBase{constructor(behInst,properties){super(behInst);this._timers=new Map}Release(){this._timers.clear();super.Release()}_UpdateTickState(){if(this._timers.size>0){this._StartTicking();this._StartTicking2()}else{this._StopTicking();this._StopTicking2()}}SaveToJson(){const ret={};for(const [name,timer]of this._timers.entries())ret[name]=timer.SaveToJson();return ret}LoadFromJson(o){this._timers.clear();for(const [name,data]of Object.entries(o)){const timer=
+new C3.Behaviors.Timer.SingleTimer;timer.LoadFromJson(data);this._timers.set(name,timer)}this._UpdateTickState()}Tick(){const dt=this._runtime.GetDt(this._inst);for(const timer of this._timers.values())if(!timer.IsPaused())timer.Add(dt)}Tick2(){for(const [name,timer]of this._timers.entries()){const shouldDelete=timer.Update();if(shouldDelete)this._timers.delete(name)}}GetDebuggerProperties(){return[{title:"behaviors.timer.debugger.timers",properties:[...this._timers.entries()].map(entry=>({name:"$"+
+entry[0],value:`${Math.round(entry[1].GetCurrentTime()*10)/10} / ${Math.round(entry[1].GetDuration()*10)/10}`}))}]}};
+
+}
+
+{
+'use strict';const C3=self.C3;C3.Behaviors.Timer.Cnds={OnTimer(name){const timer=this._timers.get(name.toLowerCase());if(!timer)return false;return timer.HasFinished()},IsTimerRunning(name){return this._timers.has(name.toLowerCase())},IsTimerPaused(name){const timer=this._timers.get(name.toLowerCase());return timer&&timer.IsPaused()}};
+
+}
+
+{
+'use strict';const C3=self.C3;C3.Behaviors.Timer.Acts={StartTimer(duration,type,name){const timer=new C3.Behaviors.Timer.SingleTimer(0,0,duration,type===1);this._timers.set(name.toLowerCase(),timer);this._UpdateTickState()},StopTimer(name){this._timers.delete(name.toLowerCase());this._UpdateTickState()},PauseResumeTimer(name,state){const timer=this._timers.get(name.toLowerCase());if(timer)timer.SetPaused(state===0)}};
+
+}
+
+{
+'use strict';const C3=self.C3;C3.Behaviors.Timer.Exps={CurrentTime(name){const timer=this._timers.get(name.toLowerCase());if(!timer)return 0;return timer.GetCurrentTime()},TotalTime(name){const timer=this._timers.get(name.toLowerCase());if(!timer)return 0;return timer.GetTotalTime()},Duration(name){const timer=this._timers.get(name.toLowerCase());if(!timer)return 0;return timer.GetDuration()}};
 
 }
 
@@ -3752,16 +3917,26 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Sprite,
 		C3.Behaviors.EightDir,
 		C3.Behaviors.scrollto,
+		C3.Behaviors.Timer,
 		C3.Plugins.Spritefont2,
 		C3.Plugins.Keyboard,
 		C3.Plugins.Mouse,
 		C3.Behaviors.Tween,
 		C3.Plugins.NinePatch,
 		C3.Plugins.AJAX,
+		C3.Plugins.Dictionary,
+		C3.Plugins.Date,
+		C3.Plugins.Browser,
 		C3.Behaviors.solid,
 		C3.Plugins.System.Cnds.OnLayoutStart,
-		C3.Plugins.System.Cnds.EveryTick,
 		C3.Plugins.System.Acts.SetLayerVisible,
+		C3.Plugins.System.Acts.WaitForPreviousActions,
+		C3.Plugins.System.Cnds.For,
+		C3.Plugins.System.Cnds.PickByComparison,
+		C3.Plugins.System.Exps.loopindex,
+		C3.Plugins.Sprite.Acts.SetInstanceVar,
+		C3.Plugins.Dictionary.Exps.Get,
+		C3.Plugins.Browser.Acts.ConsoleLog,
 		C3.Plugins.System.Cnds.ForEachOrdered,
 		C3.Plugins.Sprite.Exps.Y,
 		C3.Plugins.Sprite.Acts.MoveToTop,
@@ -3774,7 +3949,6 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Sprite.Cnds.IsOverlappingOffset,
 		C3.Plugins.Sprite.Cnds.IsBoolInstanceVarSet,
 		C3.Plugins.System.Acts.SetVar,
-		C3.Plugins.System.Cnds.PickByComparison,
 		C3.Plugins.Spritefont2.Acts.SetText,
 		C3.Plugins.Mouse.Cnds.OnObjectClicked,
 		C3.Plugins.Mouse.Acts.SetCursor,
@@ -3787,15 +3961,29 @@ self.C3_GetObjectRefTable = function () {
 		C3.Behaviors.EightDir.Exps.VectorX,
 		C3.Plugins.Sprite.Acts.SetMirrored,
 		C3.Plugins.iframe.Acts.DisplayHTMLString,
-		C3.ScriptsInEvents.Game_es_Event24_Act3,
+		C3.ScriptsInEvents.Game_es_Event25_Act3,
 		C3.Plugins.Mouse.Cnds.IsOverObject,
 		C3.Plugins.Sprite.Exps.LayerName,
-		C3.ScriptsInEvents.Game_es_Event27_Act1,
 		C3.ScriptsInEvents.Game_es_Event28_Act1,
+		C3.ScriptsInEvents.Game_es_Event29_Act1,
+		C3.Plugins.Spritefont2.Cnds.CompareInstanceVar,
+		C3.Plugins.Date.Exps.Now,
+		C3.Plugins.Date.Exps.ToTimerHours,
+		C3.Plugins.Date.Exps.ToTimerMinutes,
+		C3.Plugins.Date.Exps.ToTimerSeconds,
+		C3.Plugins.Sprite.Cnds.IsOverlapping,
+		C3.Behaviors.EightDir.Acts.SetMaxSpeed,
+		C3.Behaviors.EightDir.Acts.SetAcceleration,
+		C3.Behaviors.EightDir.Acts.SetDeceleration,
+		C3.Plugins.Sprite.Cnds.OnCollision,
+		C3.Plugins.Sprite.Acts.SetAnimFrame,
+		C3.Plugins.Sprite.Acts.SetBoolInstanceVar,
+		C3.Behaviors.Timer.Acts.StartTimer,
+		C3.Behaviors.Timer.Cnds.OnTimer,
+		C3.Behaviors.Timer.Cnds.IsTimerRunning,
 		C3.Plugins.Spritefont2.Cnds.PickByUID,
 		C3.Plugins.Spritefont2.Acts.SetOpacity,
 		C3.Behaviors.Tween.Acts.TweenOneProperty,
-		C3.Plugins.System.Acts.WaitForPreviousActions,
 		C3.Plugins.System.Acts.AddVar,
 		C3.Plugins.System.Acts.CreateObject,
 		C3.Plugins.Spritefont2.Exps.UID,
@@ -3803,13 +3991,19 @@ self.C3_GetObjectRefTable = function () {
 		C3.Behaviors.Tween.Cnds.OnTweensFinished,
 		C3.Plugins.Spritefont2.Acts.Destroy,
 		C3.Plugins.AJAX.Acts.RequestFile,
-		C3.Plugins.AJAX.Exps.LastData
+		C3.Plugins.AJAX.Exps.LastData,
+		C3.Plugins.Dictionary.Acts.JSONLoad,
+		C3.Plugins.Date.Exps.Parse
 	];
 };
 self.C3_JsPropNameTable = [
 	{game: 0},
+	{normalSpeed: 0},
+	{normalAccel: 0},
+	{normalDeccel: 0},
 	{"8Direction": 0},
 	{ScrollTo: 0},
+	{Timer: 0},
 	{Player: 0},
 	{Decorations: 0},
 	{id: 0},
@@ -3825,14 +4019,29 @@ self.C3_JsPropNameTable = [
 	{confirmBackground: 0},
 	{soal: 0},
 	{AJAX: 0},
+	{config: 0},
+	{Date: 0},
+	{Browser: 0},
+	{Sprite: 0},
+	{maxSpeed: 0},
+	{slowGround: 0},
+	{accel: 0},
+	{deccel: 0},
+	{slipperyGround: 0},
+	{cooldown: 0},
+	{ready: 0},
+	{freezeTime: 0},
+	{freezeTrap: 0},
 	{Solid: 0},
 	{solid: 0},
 	{Z_Ordering: 0},
 	{link: 0},
+	{timeDiff: 0},
 	{jawaban: 0},
 	{score: 0},
 	{storyProg: 0},
 	{soalHtmlContent: 0},
+	{endTime: 0},
 	{uid: 0},
 	{duration: 0}
 ];
@@ -3940,18 +4149,29 @@ self.C3_ExpressionFuncs = [
 		() => "soal",
 		() => "Game",
 		() => "UI",
+		() => "i",
+		() => 1,
+		() => 5,
+		p => {
+			const n0 = p._GetNode(0);
+			return () => n0.ExpInstVar();
+		},
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			return () => f0("i");
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			const f1 = p._GetNode(1).GetBoundMethod();
+			return () => n0.ExpObject(and("game-", f1("i")));
+		},
 		p => {
 			const n0 = p._GetNode(0);
 			return () => n0.ExpObject();
 		},
 		() => 0,
 		() => -20,
-		p => {
-			const n0 = p._GetNode(0);
-			return () => n0.ExpInstVar();
-		},
 		() => "",
-		() => 1,
 		p => {
 			const n0 = p._GetNode(0);
 			const n1 = p._GetNode(1);
@@ -3968,6 +4188,32 @@ self.C3_ExpressionFuncs = [
 			return () => n0.ExpBehavior();
 		},
 		() => 0.05,
+		p => {
+			const v0 = p._GetNode(0).GetVar();
+			const f1 = p._GetNode(1).GetBoundMethod();
+			return () => (v0.GetValue() - f1());
+		},
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const v1 = p._GetNode(1).GetVar();
+			const f2 = p._GetNode(2).GetBoundMethod();
+			const v3 = p._GetNode(3).GetVar();
+			const f4 = p._GetNode(4).GetBoundMethod();
+			const v5 = p._GetNode(5).GetVar();
+			const f6 = p._GetNode(6).GetBoundMethod();
+			const v7 = p._GetNode(7).GetVar();
+			const f8 = p._GetNode(8).GetBoundMethod();
+			const v9 = p._GetNode(9).GetVar();
+			const f10 = p._GetNode(10).GetBoundMethod();
+			const v11 = p._GetNode(11).GetVar();
+			const f12 = p._GetNode(12).GetBoundMethod();
+			const v13 = p._GetNode(13).GetVar();
+			return () => and((and(and(f0(v1.GetValue()), ":"), ((((f2(v3.GetValue())) >= (10) ? 1 : 0)) ? (f4(v5.GetValue())) : (and("0", f6(v7.GetValue()))))) + ":"), ((((f8(v9.GetValue())) >= (10) ? 1 : 0)) ? (f10(v11.GetValue())) : (and("0", f12(v13.GetValue())))));
+		},
+		() => "Waktu Habis",
+		() => 0.1,
+		() => "freeze",
+		() => "cooldown",
 		() => "fadeIn",
 		() => 100,
 		() => "fadeOut",
@@ -3982,6 +4228,12 @@ self.C3_ExpressionFuncs = [
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			return () => f0();
+		},
+		() => "config",
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const n1 = p._GetNode(1);
+			return () => f0(n1.ExpObject("end-time"));
 		}
 ];
 
