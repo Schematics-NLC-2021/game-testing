@@ -3967,7 +3967,7 @@ self.C3_ExpressionFuncs = [
 		p => {
 			const v0 = p._GetNode(0).GetVar();
 			const n1 = p._GetNode(1);
-			return () => and((and("skor: ", v0.GetValue()) + "/"), n1.ExpObject());
+			return () => and((and("Skor: ", v0.GetValue()) + "/"), n1.ExpObject());
 		},
 		p => {
 			const v0 = p._GetNode(0).GetVar();
