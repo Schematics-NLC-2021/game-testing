@@ -3698,6 +3698,7 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Sprite.Exps.Count,
 		C3.Plugins.System.Cnds.TriggerOnce,
 		C3.Plugins.Mouse.Cnds.OnObjectClicked,
+		C3.Plugins.Sprite.Cnds.IsAnimPlaying,
 		C3.Behaviors.Timer.Exps.Duration,
 		C3.Behaviors.Timer.Exps.CurrentTime,
 		C3.Behaviors.Timer.Cnds.IsTimerRunning,
@@ -3851,7 +3852,7 @@ function or(l, r)
 
 self.C3_ExpressionFuncs = [
 		() => 0,
-		() => 600,
+		() => 20,
 		() => "timer",
 		() => "i",
 		p => {
@@ -3994,6 +3995,7 @@ self.C3_ExpressionFuncs = [
 			const n0 = p._GetNode(0);
 			return () => (n0.ExpObject() - 1);
 		},
+		() => "submit",
 		p => {
 			const v0 = p._GetNode(0).GetVar();
 			const f1 = p._GetNode(1).GetBoundMethod();
