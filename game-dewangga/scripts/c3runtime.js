@@ -3704,6 +3704,7 @@ self.C3_GetObjectRefTable = function () {
 		C3.Behaviors.Timer.Cnds.IsTimerRunning,
 		C3.Behaviors.Timer.Cnds.OnTimer,
 		C3.Behaviors.DragnDrop.Acts.SetEnabled,
+		C3.Behaviors.Timer.Acts.StopTimer,
 		C3.Plugins.Spritefont2.Acts.SetVisible,
 		C3.Plugins.System.Acts.Wait,
 		C3.Plugins.System.Exps.random,
@@ -3852,7 +3853,7 @@ function or(l, r)
 
 self.C3_ExpressionFuncs = [
 		() => 0,
-		() => 20,
+		() => 600,
 		() => "timer",
 		() => "i",
 		p => {

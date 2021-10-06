@@ -3482,8 +3482,9 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.System.Acts.SubVar,
 		C3.Behaviors.Timer.Exps.Duration,
 		C3.Behaviors.Timer.Exps.CurrentTime,
+		C3.Behaviors.Timer.Cnds.IsTimerRunning,
 		C3.Behaviors.Timer.Cnds.OnTimer,
-		C3.Behaviors.Timer.Acts.PauseResumeTimer,
+		C3.Behaviors.Timer.Acts.StopTimer,
 		C3.ScriptsInEvents.EventSheet1_Event33_Act3,
 		C3.Plugins.System.Acts.Wait,
 		C3.Plugins.System.Exps.random
