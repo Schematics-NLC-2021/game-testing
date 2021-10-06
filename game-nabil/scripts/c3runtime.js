@@ -3624,7 +3624,7 @@ function or(l, r)
 }
 
 self.C3_ExpressionFuncs = [
-		() => 6,
+		() => 600,
 		() => "timer",
 		() => "i",
 		() => 0,
