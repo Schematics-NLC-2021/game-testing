@@ -3402,6 +3402,41 @@ WindowInnerWidth(){return this._runtime.GetCanvasManager().GetLastWidth()},Windo
 }
 
 {
+'use strict';const C3=self.C3;C3.Behaviors.Timer=class TimerBehavior extends C3.SDKBehaviorBase{constructor(opts){super(opts)}Release(){super.Release()}};
+
+}
+
+{
+'use strict';const C3=self.C3;C3.Behaviors.Timer.Type=class TimerType extends C3.SDKBehaviorTypeBase{constructor(behaviorType){super(behaviorType)}Release(){super.Release()}OnCreate(){}};
+
+}
+
+{
+'use strict';const C3=self.C3;
+C3.Behaviors.Timer.SingleTimer=class SingleTimer{constructor(current,total,duration,isRegular){this._current=C3.New(C3.KahanSum);this._current.Set(current||0);this._total=C3.New(C3.KahanSum);this._total.Set(total||0);this._duration=duration||0;this._isRegular=!!isRegular;this._isPaused=false}GetCurrentTime(){return this._current.Get()}GetTotalTime(){return this._total.Get()}GetDuration(){return this._duration}SetPaused(p){this._isPaused=!!p}IsPaused(){return this._isPaused}Add(t){this._current.Add(t);this._total.Add(t)}HasFinished(){return this._current.Get()>=
+this._duration}Update(){if(this.HasFinished())if(this._isRegular)this._current.Subtract(this._duration);else return true;return false}SaveToJson(){return{"c":this._current.Get(),"t":this._total.Get(),"d":this._duration,"r":this._isRegular,"p":this._isPaused}}LoadFromJson(o){this._current.Set(o["c"]);this._total.Set(o["t"]);this._duration=o["d"];this._isRegular=!!o["r"];this._isPaused=!!o["p"]}};
+C3.Behaviors.Timer.Instance=class TimerInstance extends C3.SDKBehaviorInstanceBase{constructor(behInst,properties){super(behInst);this._timers=new Map}Release(){this._timers.clear();super.Release()}_UpdateTickState(){if(this._timers.size>0){this._StartTicking();this._StartTicking2()}else{this._StopTicking();this._StopTicking2()}}SaveToJson(){const ret={};for(const [name,timer]of this._timers.entries())ret[name]=timer.SaveToJson();return ret}LoadFromJson(o){this._timers.clear();for(const [name,data]of Object.entries(o)){const timer=
+new C3.Behaviors.Timer.SingleTimer;timer.LoadFromJson(data);this._timers.set(name,timer)}this._UpdateTickState()}Tick(){const dt=this._runtime.GetDt(this._inst);for(const timer of this._timers.values())if(!timer.IsPaused())timer.Add(dt)}Tick2(){for(const [name,timer]of this._timers.entries()){const shouldDelete=timer.Update();if(shouldDelete)this._timers.delete(name)}}GetDebuggerProperties(){return[{title:"behaviors.timer.debugger.timers",properties:[...this._timers.entries()].map(entry=>({name:"$"+
+entry[0],value:`${Math.round(entry[1].GetCurrentTime()*10)/10} / ${Math.round(entry[1].GetDuration()*10)/10}`}))}]}};
+
+}
+
+{
+'use strict';const C3=self.C3;C3.Behaviors.Timer.Cnds={OnTimer(name){const timer=this._timers.get(name.toLowerCase());if(!timer)return false;return timer.HasFinished()},IsTimerRunning(name){return this._timers.has(name.toLowerCase())},IsTimerPaused(name){const timer=this._timers.get(name.toLowerCase());return timer&&timer.IsPaused()}};
+
+}
+
+{
+'use strict';const C3=self.C3;C3.Behaviors.Timer.Acts={StartTimer(duration,type,name){const timer=new C3.Behaviors.Timer.SingleTimer(0,0,duration,type===1);this._timers.set(name.toLowerCase(),timer);this._UpdateTickState()},StopTimer(name){this._timers.delete(name.toLowerCase());this._UpdateTickState()},PauseResumeTimer(name,state){const timer=this._timers.get(name.toLowerCase());if(timer)timer.SetPaused(state===0)}};
+
+}
+
+{
+'use strict';const C3=self.C3;C3.Behaviors.Timer.Exps={CurrentTime(name){const timer=this._timers.get(name.toLowerCase());if(!timer)return 0;return timer.GetCurrentTime()},TotalTime(name){const timer=this._timers.get(name.toLowerCase());if(!timer)return 0;return timer.GetTotalTime()},Duration(name){const timer=this._timers.get(name.toLowerCase());if(!timer)return 0;return timer.GetDuration()}};
+
+}
+
+{
 const C3 = self.C3;
 self.C3_GetObjectRefTable = function () {
 	return [
@@ -3409,8 +3444,11 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Spritefont2,
 		C3.Plugins.Mouse,
 		C3.Plugins.Browser,
+		C3.Behaviors.Timer,
 		C3.Plugins.System.Cnds.OnLayoutStart,
 		C3.Plugins.Sprite.Acts.Destroy,
+		C3.Behaviors.Timer.Acts.StartTimer,
+		C3.Plugins.System.Acts.SetBoolVar,
 		C3.Plugins.System.Cnds.For,
 		C3.Plugins.System.Acts.CreateObject,
 		C3.Plugins.System.Exps.loopindex,
@@ -3421,8 +3459,10 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Sprite.Acts.SetInstanceVar,
 		C3.Plugins.Sprite.Cnds.IsAnimPlaying,
 		C3.Plugins.Spritefont2.Cnds.CompareInstanceVar,
+		C3.Plugins.Spritefont2.Acts.SetVisible,
 		C3.Plugins.Spritefont2.Acts.SetText,
 		C3.Plugins.Mouse.Cnds.OnObjectClicked,
+		C3.Plugins.System.Cnds.CompareBoolVar,
 		C3.Plugins.System.Acts.AddVar,
 		C3.Plugins.Sprite.Exps.AnimationFrame,
 		C3.Plugins.System.Acts.SetVar,
@@ -3440,7 +3480,14 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.System.Acts.SetFunctionReturnValue,
 		C3.Plugins.Sprite.Cnds.CompareFrame,
 		C3.Plugins.System.Acts.SubVar,
-		C3.ScriptsInEvents.EventSheet1_Event24_Act1
+		C3.Behaviors.Timer.Exps.Duration,
+		C3.Behaviors.Timer.Exps.CurrentTime,
+		C3.Behaviors.Timer.Cnds.IsTimerRunning,
+		C3.Behaviors.Timer.Cnds.OnTimer,
+		C3.Behaviors.Timer.Acts.StopTimer,
+		C3.ScriptsInEvents.EventSheet1_Event33_Act3,
+		C3.Plugins.System.Acts.Wait,
+		C3.Plugins.System.Exps.random
 	];
 };
 self.C3_JsPropNameTable = [
@@ -3455,6 +3502,8 @@ self.C3_JsPropNameTable = [
 	{SoalGameBG: 0},
 	{scoreframe: 0},
 	{Tombol: 0},
+	{Timer: 0},
+	{timerManager: 0},
 	{startState: 0},
 	{Neighbours: 0},
 	{startX: 0},
@@ -3468,8 +3517,14 @@ self.C3_JsPropNameTable = [
 	{xGridClicked: 0},
 	{yGridClicked: 0},
 	{Reset: 0},
+	{gameOver: 0},
+	{timesUp: 0},
+	{submitting: 0},
+	{submitted: 0},
 	{returning: 0},
-	{TombolUid: 0}
+	{TombolUid: 0},
+	{minute: 0},
+	{second: 0}
 ];
 }
 
@@ -3570,6 +3625,8 @@ function or(l, r)
 }
 
 self.C3_ExpressionFuncs = [
+		() => 600,
+		() => "timer",
 		() => "i",
 		() => 0,
 		() => 2,
@@ -3602,6 +3659,8 @@ self.C3_ExpressionFuncs = [
 		},
 		() => "submit",
 		() => 1,
+		() => 4,
+		() => 5,
 		p => {
 			const v0 = p._GetNode(0).GetVar();
 			return () => v0.GetValue();
@@ -3663,7 +3722,33 @@ self.C3_ExpressionFuncs = [
 			const f5 = p._GetNode(5).GetBoundMethod();
 			return () => (v0.GetValue() + f1(f2(f3(v4.GetValue(), f5("i"), "|"), 1, ",")));
 		},
-		() => "reset"
+		() => "reset",
+		p => {
+			const n0 = p._GetNode(0);
+			const n1 = p._GetNode(1);
+			return () => Math.floor(((n0.ExpBehavior("timer") - n1.ExpBehavior("timer")) / 60));
+		},
+		p => {
+			const v0 = p._GetNode(0).GetVar();
+			const v1 = p._GetNode(1).GetVar();
+			const v2 = p._GetNode(2).GetVar();
+			return () => (((((v0.GetValue()) > (9) ? 1 : 0)) ? (v1.GetValue()) : (and("0", v2.GetValue())))).toString();
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			const n1 = p._GetNode(1);
+			return () => Math.floor(((n0.ExpBehavior("timer") - n1.ExpBehavior("timer")) % 60));
+		},
+		() => 3,
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const f1 = p._GetNode(1).GetBoundMethod();
+			return () => ((f0() + ":") + f1());
+		},
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			return () => f0(1, 3);
+		}
 ];
 
 
