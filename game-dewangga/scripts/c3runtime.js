@@ -3599,6 +3599,41 @@ C3.Behaviors.MoveTo.Exps={Speed(){return this._GetSpeed()},MaxSpeed(){return thi
 }
 
 {
+'use strict';const C3=self.C3;C3.Behaviors.Timer=class TimerBehavior extends C3.SDKBehaviorBase{constructor(opts){super(opts)}Release(){super.Release()}};
+
+}
+
+{
+'use strict';const C3=self.C3;C3.Behaviors.Timer.Type=class TimerType extends C3.SDKBehaviorTypeBase{constructor(behaviorType){super(behaviorType)}Release(){super.Release()}OnCreate(){}};
+
+}
+
+{
+'use strict';const C3=self.C3;
+C3.Behaviors.Timer.SingleTimer=class SingleTimer{constructor(current,total,duration,isRegular){this._current=C3.New(C3.KahanSum);this._current.Set(current||0);this._total=C3.New(C3.KahanSum);this._total.Set(total||0);this._duration=duration||0;this._isRegular=!!isRegular;this._isPaused=false}GetCurrentTime(){return this._current.Get()}GetTotalTime(){return this._total.Get()}GetDuration(){return this._duration}SetPaused(p){this._isPaused=!!p}IsPaused(){return this._isPaused}Add(t){this._current.Add(t);this._total.Add(t)}HasFinished(){return this._current.Get()>=
+this._duration}Update(){if(this.HasFinished())if(this._isRegular)this._current.Subtract(this._duration);else return true;return false}SaveToJson(){return{"c":this._current.Get(),"t":this._total.Get(),"d":this._duration,"r":this._isRegular,"p":this._isPaused}}LoadFromJson(o){this._current.Set(o["c"]);this._total.Set(o["t"]);this._duration=o["d"];this._isRegular=!!o["r"];this._isPaused=!!o["p"]}};
+C3.Behaviors.Timer.Instance=class TimerInstance extends C3.SDKBehaviorInstanceBase{constructor(behInst,properties){super(behInst);this._timers=new Map}Release(){this._timers.clear();super.Release()}_UpdateTickState(){if(this._timers.size>0){this._StartTicking();this._StartTicking2()}else{this._StopTicking();this._StopTicking2()}}SaveToJson(){const ret={};for(const [name,timer]of this._timers.entries())ret[name]=timer.SaveToJson();return ret}LoadFromJson(o){this._timers.clear();for(const [name,data]of Object.entries(o)){const timer=
+new C3.Behaviors.Timer.SingleTimer;timer.LoadFromJson(data);this._timers.set(name,timer)}this._UpdateTickState()}Tick(){const dt=this._runtime.GetDt(this._inst);for(const timer of this._timers.values())if(!timer.IsPaused())timer.Add(dt)}Tick2(){for(const [name,timer]of this._timers.entries()){const shouldDelete=timer.Update();if(shouldDelete)this._timers.delete(name)}}GetDebuggerProperties(){return[{title:"behaviors.timer.debugger.timers",properties:[...this._timers.entries()].map(entry=>({name:"$"+
+entry[0],value:`${Math.round(entry[1].GetCurrentTime()*10)/10} / ${Math.round(entry[1].GetDuration()*10)/10}`}))}]}};
+
+}
+
+{
+'use strict';const C3=self.C3;C3.Behaviors.Timer.Cnds={OnTimer(name){const timer=this._timers.get(name.toLowerCase());if(!timer)return false;return timer.HasFinished()},IsTimerRunning(name){return this._timers.has(name.toLowerCase())},IsTimerPaused(name){const timer=this._timers.get(name.toLowerCase());return timer&&timer.IsPaused()}};
+
+}
+
+{
+'use strict';const C3=self.C3;C3.Behaviors.Timer.Acts={StartTimer(duration,type,name){const timer=new C3.Behaviors.Timer.SingleTimer(0,0,duration,type===1);this._timers.set(name.toLowerCase(),timer);this._UpdateTickState()},StopTimer(name){this._timers.delete(name.toLowerCase());this._UpdateTickState()},PauseResumeTimer(name,state){const timer=this._timers.get(name.toLowerCase());if(timer)timer.SetPaused(state===0)}};
+
+}
+
+{
+'use strict';const C3=self.C3;C3.Behaviors.Timer.Exps={CurrentTime(name){const timer=this._timers.get(name.toLowerCase());if(!timer)return 0;return timer.GetCurrentTime()},TotalTime(name){const timer=this._timers.get(name.toLowerCase());if(!timer)return 0;return timer.GetTotalTime()},Duration(name){const timer=this._timers.get(name.toLowerCase());if(!timer)return 0;return timer.GetDuration()}};
+
+}
+
+{
 const C3 = self.C3;
 self.C3_GetObjectRefTable = function () {
 	return [
@@ -3609,11 +3644,14 @@ self.C3_GetObjectRefTable = function () {
 		C3.Behaviors.Tween,
 		C3.Behaviors.MoveTo,
 		C3.Plugins.Mouse,
+		C3.Behaviors.Timer,
 		C3.Plugins.System.Cnds.OnLayoutStart,
 		C3.Plugins.Sprite.Acts.Destroy,
 		C3.Plugins.Spritefont2.Acts.Destroy,
 		C3.Plugins.Sprite.Acts.SetAnimFrame,
 		C3.Plugins.System.Acts.SetVar,
+		C3.Plugins.System.Acts.SetBoolVar,
+		C3.Behaviors.Timer.Acts.StartTimer,
 		C3.Plugins.System.Cnds.For,
 		C3.Plugins.System.Exps.loopindex,
 		C3.Plugins.System.Acts.CreateObject,
@@ -3660,8 +3698,17 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Sprite.Exps.Count,
 		C3.Plugins.System.Cnds.TriggerOnce,
 		C3.Plugins.Mouse.Cnds.OnObjectClicked,
+		C3.Plugins.Sprite.Cnds.IsAnimPlaying,
+		C3.Behaviors.Timer.Exps.Duration,
+		C3.Behaviors.Timer.Exps.CurrentTime,
+		C3.Behaviors.Timer.Cnds.IsTimerRunning,
+		C3.Behaviors.Timer.Cnds.OnTimer,
 		C3.Behaviors.DragnDrop.Acts.SetEnabled,
-		C3.ScriptsInEvents.EventSheet1_Event40_Act1
+		C3.Behaviors.Timer.Acts.StopTimer,
+		C3.Plugins.Spritefont2.Acts.SetVisible,
+		C3.Plugins.System.Acts.Wait,
+		C3.Plugins.System.Exps.random,
+		C3.ScriptsInEvents.EventSheet1_Event57_Act1
 	];
 };
 self.C3_JsPropNameTable = [
@@ -3685,6 +3732,8 @@ self.C3_JsPropNameTable = [
 	{button: 0},
 	{Mouse: 0},
 	{background: 0},
+	{Timer: 0},
+	{timerManager: 0},
 	{Side: 0},
 	{PuzzleStartX: 0},
 	{PuzzleStartY: 0},
@@ -3696,8 +3745,13 @@ self.C3_JsPropNameTable = [
 	{checkTop: 0},
 	{checkMiddle: 0},
 	{checkBottom: 0},
-	{gameFinished: 0},
-	{uid: 0}
+	{submitted: 0},
+	{gameOver: 0},
+	{timesUp: 0},
+	{submitting: 0},
+	{uid: 0},
+	{minute: 0},
+	{second: 0}
 ];
 }
 
@@ -3799,6 +3853,8 @@ function or(l, r)
 
 self.C3_ExpressionFuncs = [
 		() => 0,
+		() => 600,
+		() => "timer",
 		() => "i",
 		p => {
 			const v0 = p._GetNode(0).GetVar();
@@ -3940,6 +3996,47 @@ self.C3_ExpressionFuncs = [
 			const n0 = p._GetNode(0);
 			return () => (n0.ExpObject() - 1);
 		},
+		() => "submit",
+		p => {
+			const v0 = p._GetNode(0).GetVar();
+			const f1 = p._GetNode(1).GetBoundMethod();
+			const f2 = p._GetNode(2).GetBoundMethod();
+			const f3 = p._GetNode(3).GetBoundMethod();
+			const v4 = p._GetNode(4).GetVar();
+			const f5 = p._GetNode(5).GetBoundMethod();
+			return () => (v0.GetValue() + f1(f2(f3(v4.GetValue(), f5("i"), "|"), 1, ",")));
+		},
+		p => {
+			const v0 = p._GetNode(0).GetVar();
+			const f1 = p._GetNode(1).GetBoundMethod();
+			const f2 = p._GetNode(2).GetBoundMethod();
+			const f3 = p._GetNode(3).GetBoundMethod();
+			const v4 = p._GetNode(4).GetVar();
+			const f5 = p._GetNode(5).GetBoundMethod();
+			return () => (v0.GetValue() + f1(f2(f3(v4.GetValue(), f5("i"), "|"), 0, ",")));
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			const n1 = p._GetNode(1);
+			return () => Math.floor(((n0.ExpBehavior("timer") - n1.ExpBehavior("timer")) / 60));
+		},
+		p => {
+			const v0 = p._GetNode(0).GetVar();
+			const v1 = p._GetNode(1).GetVar();
+			const v2 = p._GetNode(2).GetVar();
+			return () => (((((v0.GetValue()) > (9) ? 1 : 0)) ? (v1.GetValue()) : (and("0", v2.GetValue())))).toString();
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			const n1 = p._GetNode(1);
+			return () => Math.floor(((n0.ExpBehavior("timer") - n1.ExpBehavior("timer")) % 60));
+		},
+		() => 6,
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const f1 = p._GetNode(1).GetBoundMethod();
+			return () => ((f0() + ":") + f1());
+		},
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			const f1 = p._GetNode(1).GetBoundMethod();
@@ -3967,25 +4064,12 @@ self.C3_ExpressionFuncs = [
 		p => {
 			const v0 = p._GetNode(0).GetVar();
 			const n1 = p._GetNode(1);
-			return () => and((and("Skor: ", v0.GetValue()) + "/"), n1.ExpObject());
+			return () => and((and("Skor: ", (v0.GetValue() - 7)) + "/"), (n1.ExpObject() - 7));
 		},
+		() => 7,
 		p => {
-			const v0 = p._GetNode(0).GetVar();
-			const f1 = p._GetNode(1).GetBoundMethod();
-			const f2 = p._GetNode(2).GetBoundMethod();
-			const f3 = p._GetNode(3).GetBoundMethod();
-			const v4 = p._GetNode(4).GetVar();
-			const f5 = p._GetNode(5).GetBoundMethod();
-			return () => (v0.GetValue() + f1(f2(f3(v4.GetValue(), f5("i"), "|"), 1, ",")));
-		},
-		p => {
-			const v0 = p._GetNode(0).GetVar();
-			const f1 = p._GetNode(1).GetBoundMethod();
-			const f2 = p._GetNode(2).GetBoundMethod();
-			const f3 = p._GetNode(3).GetBoundMethod();
-			const v4 = p._GetNode(4).GetVar();
-			const f5 = p._GetNode(5).GetBoundMethod();
-			return () => (v0.GetValue() + f1(f2(f3(v4.GetValue(), f5("i"), "|"), 0, ",")));
+			const f0 = p._GetNode(0).GetBoundMethod();
+			return () => f0(1, 3);
 		}
 ];
 
