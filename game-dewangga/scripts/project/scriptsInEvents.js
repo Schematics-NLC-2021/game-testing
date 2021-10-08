@@ -3,10 +3,10 @@
 
 const scriptsInEvents = {
 
-		async EventSheet1_Event57_Act1(runtime, localVars)
+		async EventSheet1_Event56_Act2(runtime, localVars)
 		{
-			parent.c3_callFunction("sendScore", [runtime.globalVars.skor]);
-			console.log(runtime.globalVars.skor + " dikirim");
+			parent.c3_callFunction("sendScore", [localVars.convertedScore]);
+			console.log(localVars.convertedScore + " dikirim");
 		}
 
 };
