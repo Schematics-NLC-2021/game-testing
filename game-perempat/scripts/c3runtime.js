@@ -4194,19 +4194,20 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Mouse.Cnds.OnObjectClicked,
 		C3.Plugins.Mouse.Acts.SetCursor,
 		C3.Plugins.Sprite.Cnds.CompareFrame,
+		C3.Plugins.Sprite.Cnds.IsVisible,
 		C3.Plugins.Sprite.Cnds.IsOnLayer,
 		C3.Plugins.iframe.Acts.NavigateURL,
-		C3.Plugins.System.Acts.Wait,
+		C3.Plugins.System.Cnds.PickAll,
+		C3.Plugins.Sprite.Exps.LayerName,
+		C3.Plugins.Sprite.Acts.SetVisible,
+		C3.Plugins.iframe.Acts.DisplayHTMLString,
 		C3.Plugins.System.Cnds.Compare,
 		C3.Behaviors.EightDir.Exps.VectorX,
 		C3.Plugins.Sprite.Acts.SetMirrored,
-		C3.Plugins.iframe.Acts.DisplayHTMLString,
-		C3.ScriptsInEvents.Game_es_Event26_Act3,
 		C3.Plugins.Mouse.Cnds.IsOverObject,
-		C3.Plugins.Sprite.Exps.LayerName,
-		C3.ScriptsInEvents.Game_es_Event29_Act1,
 		C3.ScriptsInEvents.Game_es_Event30_Act1,
 		C3.Plugins.Arr.Acts.Push,
+		C3.ScriptsInEvents.Game_es_Event32_Act1,
 		C3.Plugins.Spritefont2.Cnds.CompareInstanceVar,
 		C3.Plugins.Date.Exps.Now,
 		C3.Plugins.Date.Exps.ToTimerHours,
@@ -4218,6 +4219,7 @@ self.C3_GetObjectRefTable = function () {
 		C3.Behaviors.EightDir.Acts.SetDeceleration,
 		C3.Plugins.Sprite.Cnds.OnCollision,
 		C3.Plugins.Sprite.Acts.SetAnimFrame,
+		C3.Plugins.System.Acts.Wait,
 		C3.Plugins.Sprite.Acts.SetBoolInstanceVar,
 		C3.Behaviors.Timer.Acts.StartTimer,
 		C3.Behaviors.Timer.Cnds.OnTimer,
@@ -4252,15 +4254,14 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.LocalStorage.Acts.CheckItemExists,
 		C3.Plugins.Arr.Acts.SetSize,
 		C3.Plugins.System.Exps.random,
-		C3.Plugins.System.Cnds.Repeat,
-		C3.Plugins.Spritefont2.Acts.AppendText,
 		C3.Plugins.LocalStorage.Cnds.OnItemExists,
 		C3.Plugins.LocalStorage.Acts.GetItem,
 		C3.Plugins.LocalStorage.Cnds.OnItemGet,
 		C3.Plugins.Arr.Acts.JSONLoad,
 		C3.Plugins.LocalStorage.Exps.ItemValue,
 		C3.Plugins.System.Exps.float,
-		C3.Plugins.System.Exps.tokenat
+		C3.Plugins.System.Exps.tokenat,
+		C3.Plugins.Sprite.Acts.StartAnim
 	];
 };
 self.C3_JsPropNameTable = [
@@ -4311,6 +4312,8 @@ self.C3_JsPropNameTable = [
 	{Pin: 0},
 	{gameText: 0},
 	{LocalStorage: 0},
+	{loadScreen: 0},
+	{Sprite3: 0},
 	{solid: 0},
 	{Z_Ordering: 0},
 	{link: 0},
@@ -4465,12 +4468,10 @@ self.C3_ExpressionFuncs = [
 			return () => (and((("Mau " + ((n0.ExpInstVar()) ? ("main game") : ("mengerjakan soal"))) + " pos "), n1.ExpInstVar()) + "?");
 		},
 		() => 2,
-		() => 0.01,
 		p => {
 			const n0 = p._GetNode(0);
 			return () => n0.ExpBehavior();
 		},
-		() => 0.05,
 		p => {
 			const v0 = p._GetNode(0).GetVar();
 			const f1 = p._GetNode(1).GetBoundMethod();
@@ -4503,6 +4504,7 @@ self.C3_ExpressionFuncs = [
 			return () => (n0.ExpObject() - n1.ExpObject());
 		},
 		() => "Kamu sudah mengunjungi pos ini",
+		() => 0.01,
 		() => "Pencet spasi untuk mengunjungi pos ini",
 		() => "posVisited",
 		() => "unsentScores",
@@ -4543,8 +4545,6 @@ self.C3_ExpressionFuncs = [
 			const f0 = p._GetNode(0).GetBoundMethod();
 			return () => f0(1, 2);
 		},
-		() => "Loading",
-		() => ".",
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			const f1 = p._GetNode(1).GetBoundMethod();
