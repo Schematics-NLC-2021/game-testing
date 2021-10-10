@@ -8,7 +8,7 @@
 		)
     </style>
 </head>
-<body>
+<body onload="setSoal()">
 
 	<p id="soal">mattis rhoncus urna neque viverra justo nec ultrices dui sapien eget mi proin sed libero</p>
 
@@ -35,8 +35,9 @@
 			}
 		}
 
-		function setSoal(soal) {
-		  document.getElementById("soal").innerHTML = soal;
+		function setSoal() {
+			const soal = "Lorem Ipsum"
+		  	document.getElementById("soal").innerHTML = soal;
 		}
 	</script>
 </body>
