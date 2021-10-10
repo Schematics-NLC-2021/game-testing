@@ -4205,7 +4205,6 @@ self.C3_GetObjectRefTable = function () {
 		C3.Behaviors.EightDir.Exps.VectorX,
 		C3.Plugins.Sprite.Acts.SetMirrored,
 		C3.Plugins.Mouse.Cnds.IsOverObject,
-		C3.ScriptsInEvents.Game_es_Event30_Act1,
 		C3.Plugins.Arr.Acts.Push,
 		C3.ScriptsInEvents.Game_es_Event32_Act1,
 		C3.Plugins.Spritefont2.Cnds.CompareInstanceVar,
@@ -4261,7 +4260,7 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.LocalStorage.Exps.ItemValue,
 		C3.Plugins.System.Exps.float,
 		C3.Plugins.System.Exps.tokenat,
-		C3.Plugins.Sprite.Acts.StartAnim
+		C3.Plugins.System.Exps.loadingprogress
 	];
 };
 self.C3_JsPropNameTable = [
@@ -4322,7 +4321,6 @@ self.C3_JsPropNameTable = [
 	{curX: 0},
 	{curY: 0},
 	{accumulatedScore: 0},
-	{jawaban: 0},
 	{score: 0},
 	{storyProg: 0},
 	{soalHtmlContent: 0},
@@ -4472,6 +4470,7 @@ self.C3_ExpressionFuncs = [
 			const n0 = p._GetNode(0);
 			return () => n0.ExpBehavior();
 		},
+		() => "jawaban disubmit",
 		p => {
 			const v0 = p._GetNode(0).GetVar();
 			const f1 = p._GetNode(1).GetBoundMethod();
@@ -4556,7 +4555,8 @@ self.C3_ExpressionFuncs = [
 			const f1 = p._GetNode(1).GetBoundMethod();
 			const f2 = p._GetNode(2).GetBoundMethod();
 			return () => f0(f1(f2(), 1, " "));
-		}
+		},
+		() => 0.2
 ];
 
 

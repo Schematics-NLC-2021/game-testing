@@ -1,44 +1,50 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <style>
-        body { 
+	<style>
+		body {
 			height: 100%;
 			background-color: white;
-		)
-    </style>
+		}
+	</style>
 </head>
+
 <body onload="setSoal()">
 
-	<p id="soal">mattis rhoncus urna neque viverra justo nec ultrices dui sapien eget mi proin sed libero</p>
+	<p id="soal1">mattis rhoncus urna neque viverra justo nec ultrices dui sapien eget mi proin sed libero</p>
 
-	<form onSubmit="sendAnswer()">
-	  <label for="jawaban">Jawaban</label><br>
-	  <input type="text" id="jawaban" name="jawaban" value=""><br>
-	  <input type="submit">
-	</form> 
-	
+	<label for="jawaban1">Jawaban: </label>
+	<input type="text" id="jawaban1" name="jawaban1" value=""><br>
+
+	<p id="soal2">mattis rhoncus urna neque viverra justo nec ultrices dui sapien eget mi proin sed libero</p>
+
+	<label for="jawaban2">Jawaban: </label>
+	<input type="text" id="jawaban2" name="jawaban2" value=""><br>
+
+	<p>Peserta baru bisa kembali ke game utama setelah mensubmit jawaban. Kosongi kolom jawaban jika tidak ingin menjawab soal.</p>
+	<button onclick="sendAnswer()">Submit Jawaban</button>
+
 	<p id="warning"></p>
-	
+
 	<script>
 		function sendAnswer() {
 			event.preventDefault();
-		    const jawaban = document.getElementById("jawaban").value;
+			const jawaban1 = document.getElementById("jawaban1").value;
+			const jawaban2 = document.getElementById("jawaban2").value;
 			const warning = document.getElementById("warning");
-			
-			if(jawaban) {
-				parent.c3_callFunction("sendAnswer", [jawaban]);
-				warning.innerHTML = "Jawaban sedang dikirim";
-			}
-			else {
-				warning.innerHTML = "Isi jawabannya";
-			}
+
+			warning.innerHTML = "Jawaban sedang dikirim";
+			parent.c3_callFunction("answerSent");
 		}
 
 		function setSoal() {
-			const soal = "Lorem Ipsum"
-		  	document.getElementById("soal").innerHTML = soal;
+			const soal1 = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse facere, alias ratione veritatis tempore?"
+			const soal2 = "pariatur architecto blanditiis eaque quas deleniti illum quos ea eos ab vero nostrum expedita earum modi?"
+			document.getElementById("soal1").innerHTML = soal1;
+			document.getElementById("soal2").innerHTML = soal2;
 		}
 	</script>
 </body>
+
 </html>
