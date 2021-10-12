@@ -4663,6 +4663,11 @@ self.C3_ExpressionFuncs = [
 		() => "Accept",
 		() => "application/json",
 		() => "Content-Type",
+		() => "Authorization",
+		p => {
+			const v0 = p._GetNode(0).GetVar();
+			return () => ("Bearer " + v0.GetValue());
+		},
 		() => "sendGame",
 		p => {
 			const v0 = p._GetNode(0).GetVar();
