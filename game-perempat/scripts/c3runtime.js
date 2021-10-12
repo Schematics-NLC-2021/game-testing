@@ -4201,9 +4201,18 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Browser.Acts.ConsoleLog,
 		C3.Plugins.System.Cnds.CompareVar,
 		C3.Plugins.Sprite.Acts.SetPos,
-		C3.Plugins.System.Cnds.ForEachOrdered,
+		C3.Plugins.System.Cnds.ForEach,
+		C3.Plugins.Sprite.Cnds.IsOverlapping,
+		C3.Plugins.System.Acts.CreateObject,
+		C3.Plugins.Sprite.Exps.X,
+		C3.Plugins.Sprite.Exps.Width,
 		C3.Plugins.Sprite.Exps.Y,
+		C3.Plugins.Sprite.Acts.SetAnimFrame,
+		C3.Plugins.Sprite.Exps.AnimationFrame,
+		C3.Plugins.Sprite.Acts.SetScale,
+		C3.Plugins.Sprite.Cnds.IsOnLayer,
 		C3.Plugins.Sprite.Acts.MoveToTop,
+		C3.Plugins.System.Cnds.ForEachOrdered,
 		C3.Plugins.Spritefont2.Cnds.IsOnLayer,
 		C3.Plugins.Spritefont2.Acts.MoveToTop,
 		C3.Plugins.System.Cnds.LayerVisible,
@@ -4211,6 +4220,11 @@ self.C3_GetObjectRefTable = function () {
 		C3.Behaviors.EightDir.Acts.SimulateControl,
 		C3.Behaviors.EightDir.Cnds.IsMoving,
 		C3.Plugins.System.Cnds.Every,
+		C3.Plugins.System.Cnds.TriggerOnce,
+		C3.Plugins.Sprite.Acts.SetAnim,
+		C3.Plugins.System.Cnds.Compare,
+		C3.Behaviors.EightDir.Exps.VectorX,
+		C3.Plugins.Sprite.Acts.SetMirrored,
 		C3.Plugins.Keyboard.Cnds.OnKey,
 		C3.Plugins.Sprite.Cnds.IsOverlappingOffset,
 		C3.Plugins.Arr.Cnds.Contains,
@@ -4223,49 +4237,50 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Mouse.Acts.SetCursor,
 		C3.Plugins.Sprite.Cnds.CompareFrame,
 		C3.Plugins.Sprite.Cnds.IsVisible,
-		C3.Plugins.Sprite.Cnds.IsOnLayer,
 		C3.Plugins.iframe.Acts.NavigateURL,
 		C3.Plugins.System.Cnds.PickAll,
 		C3.Plugins.Sprite.Exps.LayerName,
 		C3.Plugins.Sprite.Acts.SetVisible,
-		C3.ScriptsInEvents.Game_es_Event24_Act1,
-		C3.Plugins.iframe.Acts.DisplayHTMLString,
-		C3.Plugins.System.Cnds.Compare,
-		C3.Behaviors.EightDir.Exps.VectorX,
-		C3.Plugins.Sprite.Acts.SetMirrored,
-		C3.Plugins.Mouse.Cnds.IsOverObject,
 		C3.ScriptsInEvents.Game_es_Event31_Act1,
+		C3.Plugins.iframe.Acts.DisplayHTMLString,
+		C3.Plugins.Mouse.Cnds.IsOverObject,
+		C3.ScriptsInEvents.Game_es_Event36_Act1,
 		C3.Plugins.Arr.Acts.Push,
 		C3.Plugins.System.Acts.AddVar,
-		C3.ScriptsInEvents.Game_es_Event33_Act1,
+		C3.ScriptsInEvents.Game_es_Event38_Act1,
 		C3.Plugins.Spritefont2.Cnds.CompareInstanceVar,
 		C3.Plugins.Date.Exps.Now,
 		C3.Plugins.Date.Exps.ToTimerHours,
 		C3.Plugins.Date.Exps.ToTimerMinutes,
 		C3.Plugins.Date.Exps.ToTimerSeconds,
-		C3.Plugins.Sprite.Cnds.IsOverlapping,
 		C3.Behaviors.EightDir.Acts.SetMaxSpeed,
 		C3.Behaviors.EightDir.Acts.SetAcceleration,
 		C3.Behaviors.EightDir.Acts.SetDeceleration,
 		C3.Plugins.Sprite.Cnds.OnCollision,
-		C3.Plugins.Sprite.Acts.SetAnimFrame,
 		C3.Plugins.System.Acts.Wait,
 		C3.Plugins.Sprite.Acts.SetBoolInstanceVar,
 		C3.Behaviors.Timer.Acts.StartTimer,
 		C3.Behaviors.Timer.Cnds.OnTimer,
 		C3.Behaviors.Timer.Cnds.IsTimerRunning,
-		C3.Plugins.Sprite.Exps.X,
-		C3.Plugins.System.Cnds.TriggerOnce,
-		C3.Plugins.System.Acts.CreateObject,
 		C3.Plugins.Sprite.Exps.Height,
-		C3.Plugins.Sprite.Exps.Width,
 		C3.Plugins.Sprite.Cnds.IsOnScreen,
 		C3.Plugins.LocalStorage.Acts.SetItem,
 		C3.Plugins.Arr.Exps.AsJSON,
 		C3.Plugins.System.Cnds.IsGroupActive,
 		C3.Plugins.Audio.Acts.Play,
 		C3.Plugins.Audio.Acts.PlayByName,
-		C3.Plugins.Sprite.Exps.AnimationFrame,
+		C3.Plugins.Json.Acts.Parse,
+		C3.Plugins.Json.Acts.SetValue,
+		C3.Plugins.Json.Exps.ToBeautifiedString,
+		C3.Plugins.AJAX.Acts.SetHeader,
+		C3.Plugins.AJAX.Acts.Post,
+		C3.Plugins.Json.Exps.ToCompactString,
+		C3.Plugins.AJAX.Cnds.OnComplete,
+		C3.Plugins.AJAX.Exps.LastData,
+		C3.Plugins.Json.Exps.Get,
+		C3.Plugins.AJAX.Cnds.OnError,
+		C3.Plugins.Arr.Acts.Delete,
+		C3.Plugins.Arr.Exps.IndexOf,
 		C3.Plugins.Spritefont2.Cnds.PickByUID,
 		C3.Plugins.Spritefont2.Acts.SetOpacity,
 		C3.Behaviors.Tween.Acts.TweenOneProperty,
@@ -4278,18 +4293,9 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.TextBox.Exps.Text,
 		C3.Plugins.Spritefont2.Acts.SetDefaultColor,
 		C3.Plugins.System.Exps.rgbex255,
-		C3.Plugins.AJAX.Acts.SetHeader,
-		C3.Plugins.Json.Acts.Parse,
-		C3.Plugins.Json.Acts.SetValue,
-		C3.Plugins.AJAX.Acts.Post,
-		C3.Plugins.Json.Exps.ToCompactString,
 		C3.Plugins.System.Acts.SetFunctionReturnValue,
 		C3.Plugins.TextBox.Cnds.CompareText,
-		C3.Plugins.AJAX.Exps.LastData,
-		C3.Plugins.Json.Exps.Get,
 		C3.Plugins.Audio.Cnds.IsTagPlaying,
-		C3.Plugins.AJAX.Cnds.OnComplete,
-		C3.Plugins.AJAX.Cnds.OnError,
 		C3.Plugins.AJAX.Acts.RequestFile,
 		C3.Plugins.Dictionary.Acts.JSONLoad,
 		C3.Plugins.Date.Exps.Parse,
@@ -4361,6 +4367,8 @@ self.C3_JsPropNameTable = [
 	{slowGroundAsset: 0},
 	{tooltip: 0},
 	{Audio: 0},
+	{posSign: 0},
+	{Rain: 0},
 	{solid: 0},
 	{Z_Ordering: 0},
 	{link: 0},
@@ -4514,9 +4522,36 @@ self.C3_ExpressionFuncs = [
 		},
 		p => {
 			const n0 = p._GetNode(0);
+			const n1 = p._GetNode(1);
+			return () => ((n0.ExpObject() - (n1.ExpObject() / 2)) + 13);
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			return () => (n0.ExpObject() - 10);
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			const n1 = p._GetNode(1);
+			const n2 = p._GetNode(2);
+			const n3 = p._GetNode(3);
+			return () => ((n0.ExpInstVar()) ? (0) : (((1 + (n1.ExpObject() * 3)) + ((((n2.ExpInstVar()) === ("Easy") ? 1 : 0)) ? (0) : (((((n3.ExpInstVar()) === ("Medium") ? 1 : 0)) ? (1) : (2)))))));
+		},
+		() => 0.6,
+		p => {
+			const n0 = p._GetNode(0);
+			return () => (n0.ExpObject() + 18);
+		},
+		p => {
+			const n0 = p._GetNode(0);
 			return () => n0.ExpObject();
 		},
 		() => 0.33,
+		() => "Run",
+		() => "Idle",
+		p => {
+			const n0 = p._GetNode(0);
+			return () => n0.ExpBehavior();
+		},
 		() => -20,
 		() => "",
 		p => {
@@ -4533,8 +4568,13 @@ self.C3_ExpressionFuncs = [
 		},
 		() => 2,
 		p => {
-			const n0 = p._GetNode(0);
-			return () => n0.ExpBehavior();
+			const v0 = p._GetNode(0).GetVar();
+			const v1 = p._GetNode(1).GetVar();
+			return () => (and(and(v0.GetValue(), ","), (v1.GetValue() - 10))).toString();
+		},
+		p => {
+			const v0 = p._GetNode(0).GetVar();
+			return () => (v0.GetValue() - 10);
 		},
 		p => {
 			const v0 = p._GetNode(0).GetVar();
@@ -4568,13 +4608,13 @@ self.C3_ExpressionFuncs = [
 		() => 0.1,
 		() => "freeze",
 		() => "cooldown",
+		() => "topGame",
 		p => {
 			const n0 = p._GetNode(0);
 			const n1 = p._GetNode(1);
 			return () => ((n0.ExpObject() - n1.ExpObject()) + 30);
 		},
 		() => 0.01,
-		() => "topGame",
 		p => {
 			const v0 = p._GetNode(0).GetVar();
 			const v1 = p._GetNode(1).GetVar();
@@ -4616,6 +4656,46 @@ self.C3_ExpressionFuncs = [
 			const n0 = p._GetNode(0);
 			return () => and("placeholder", n0.ExpObject());
 		},
+		() => "{}",
+		() => "game_id",
+		() => "game_point",
+		() => "Sending score game",
+		() => "Accept",
+		() => "application/json",
+		() => "Content-Type",
+		() => "sendGame",
+		p => {
+			const v0 = p._GetNode(0).GetVar();
+			return () => (v0.GetValue() + "/perempat/insert_jawaban_pos_game");
+		},
+		() => "POST",
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			return () => f0();
+		},
+		() => "SendScoreGame Berhasil",
+		p => {
+			const n0 = p._GetNode(0);
+			return () => n0.ExpObject("data.game_id");
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			return () => n0.ExpObject("data.game_point");
+		},
+		() => "SendScoreGame Gagal",
+		p => {
+			const v0 = p._GetNode(0).GetVar();
+			const v1 = p._GetNode(1).GetVar();
+			return () => and((and("Removing ", v0.GetValue()) + " "), v1.GetValue());
+		},
+		() => "Before",
+		p => {
+			const n0 = p._GetNode(0);
+			const v1 = p._GetNode(1).GetVar();
+			const v2 = p._GetNode(2).GetVar();
+			return () => n0.ExpObject((and(and(v1.GetValue(), ","), v2.GetValue())).toString());
+		},
+		() => "After",
 		() => "fadeIn",
 		() => 100,
 		() => "fadeOut",
@@ -4635,17 +4715,9 @@ self.C3_ExpressionFuncs = [
 		() => "white",
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
-			return () => f0();
-		},
-		p => {
-			const f0 = p._GetNode(0).GetBoundMethod();
 			return () => f0(255, 255, 255);
 		},
 		() => "Mencoba login...",
-		() => "Accept",
-		() => "application/json",
-		() => "Content-Type",
-		() => "{}",
 		() => "name",
 		() => "password",
 		() => "login",
@@ -4653,7 +4725,6 @@ self.C3_ExpressionFuncs = [
 			const v0 = p._GetNode(0).GetVar();
 			return () => (v0.GetValue() + "/auth/login");
 		},
-		() => "POST",
 		() => "Password harus diisi",
 		() => "4px solid rgb(253, 117, 117)",
 		() => "rgb(255, 209, 209)",
@@ -4686,6 +4757,10 @@ self.C3_ExpressionFuncs = [
 			const f0 = p._GetNode(0).GetBoundMethod();
 			const n1 = p._GetNode(1);
 			return () => f0(n1.ExpObject("end-time"));
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			return () => n0.ExpObject("url-api");
 		},
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
