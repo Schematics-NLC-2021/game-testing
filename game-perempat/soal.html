@@ -24,7 +24,7 @@
 			padding-bottom: 0.5em;
 		}
 
-		#soal {
+		.soal {
 			justify-content: center;
 			font-size: 1.5vw;
 			max-width: 50vw;
@@ -63,21 +63,22 @@
 
 <body onload="setSoal()">
 	<div class="flex-containter">
-	<p id="soal1">mattis rhoncus urna neque viverra justo nec ultrices dui sapien eget mi proin sed libero</p>
+		<p class="soal" id="soal1">mattis rhoncus urna neque viverra justo nec ultrices dui sapien eget mi proin sed libero</p>
 
-	<label for="jawaban1">Jawaban: </label>
-	<input type="text" id="jawaban1" name="jawaban1" value=""><br>
+		<label for="jawaban1">Jawaban: </label>
+		<input type="text" id="jawaban1" name="jawaban1" value=""><br>
 
-	<p id="soal2">mattis rhoncus urna neque viverra justo nec ultrices dui sapien eget mi proin sed libero</p>
+		<p class="soal" id="soal2">mattis rhoncus urna neque viverra justo nec ultrices dui sapien eget mi proin sed libero</p>
 
-	<label for="jawaban2">Jawaban: </label>
-	<input type="text" id="jawaban2" name="jawaban2" value=""><br>
+		<label for="jawaban2">Jawaban: </label>
+		<input type="text" id="jawaban2" name="jawaban2" value=""><br>
 
-	<p>Peserta baru bisa kembali ke game utama setelah mensubmit jawaban. Kosongi kolom jawaban jika tidak ingin menjawab soal.</p>
-	<button onclick="sendAnswer()">Submit Jawaban</button>
+		<p>Peserta baru bisa kembali ke game utama setelah mensubmit jawaban. Kosongi kolom jawaban jika tidak ingin menjawab soal.</p>
+		<button onclick="sendAnswer()">Submit Jawaban</button>
 
-	<p id="warning"></p>
+		<p id="warning"></p>
 
+	</div>
 	<script>
 		function sendAnswer() {
 			event.preventDefault();
@@ -86,7 +87,7 @@
 			const warning = document.getElementById("warning");
 
 			warning.innerHTML = "Jawaban sedang dikirim";
-			parent.c3_callFunction("answerSent");
+			parent.c3_callFunction("answerSent", [10]);
 		}
 
 		function setSoal() {
