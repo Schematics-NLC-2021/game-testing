@@ -5,7 +5,7 @@
     <style>
 
 		.flex-container {
-			display:flex;
+			display: flex;
 			justify-content:center;
 		}
 		
@@ -27,12 +27,14 @@
 		.soal {
 			justify-content: center;
 			font-size: 1.5vw;
+			color: rgb(225, 225, 225);
 			max-width: 50vw;
 			align-content: center;
 			text-align: left;
 			background-color: rgb(30,30,30);			
 			border: 4px solid rgb(44, 44, 44);
 			border-radius: 8px;
+			display: none;
 		}
 		
 		:root {
@@ -62,16 +64,13 @@
 </head>
 
 <body onload="setSoal()">
+	<p id="loading">Loading...</p>
+	
 	<div class="flex-containter">
-		<p class="soal" id="soal1">mattis rhoncus urna neque viverra justo nec ultrices dui sapien eget mi proin sed libero</p>
+		
+		<div class="soal" id="soal1"></div>
 
-		<label for="jawaban1">Jawaban: </label>
-		<input type="text" id="jawaban1" name="jawaban1" value=""><br>
-
-		<p class="soal" id="soal2">mattis rhoncus urna neque viverra justo nec ultrices dui sapien eget mi proin sed libero</p>
-
-		<label for="jawaban2">Jawaban: </label>
-		<input type="text" id="jawaban2" name="jawaban2" value=""><br>
+		<div class="soal" id="soal2"></div>
 
 		<p>Peserta baru bisa kembali ke game utama setelah mensubmit jawaban. Kosongi kolom jawaban jika tidak ingin menjawab soal.</p>
 		<button onclick="sendAnswer()">Submit Jawaban</button>
@@ -86,16 +85,59 @@
 			const jawaban2 = document.getElementById("jawaban2").value;
 			const warning = document.getElementById("warning");
 
-			warning.innerHTML = "Jawaban sedang dikirim";
+			warning.innerHTML = "Mengirim jawaban...";
 			parent.c3_callFunction("answerSent", [10]);
 		}
 
 		function setSoal() {
-			const soal1 = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse facere, alias ratione veritatis tempore?"
-			const soal2 = "pariatur architecto blanditiis eaque quas deleniti illum quos ea eos ab vero nostrum expedita earum modi?"
-			document.getElementById("soal1").innerHTML = soal1;
-			document.getElementById("soal2").innerHTML = soal2;
-
+			const baseUrl = sessionStorage.getItem("ApiBase");
+			const curPos = sessionStorage.getItem("curPos");
+			const token = sessionStorage.getItem("token");
+			
+			const link = `${baseUrl}/perempatsoal/pos/${curPos}`;
+			
+			fetch(link, {
+				headers: {
+					'Content-Type': 'application/json',
+					'Accept': 'application/json',
+					'Authorization': 'Bearer ' + token
+				},
+        	})
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+				
+                return response.json()
+            })
+            .then(data => {
+                const soal1 = document.getElementById("soal1");
+                const soal2 = document.getElementById("soal2");
+				const loading = document.getElementById("loading");
+				
+                soal1.innerHTML = `
+				<h2>Soal 1</h2>
+				${data[0].isi_soal}
+				<label for="jawaban1">Jawaban: </label>
+				<input type="text" id="jawaban1" name="jawaban1" value=""><br>
+				`;
+				
+                soal2.innerHTML = `
+				<h2>Soal 2</h2>
+				${data[1].isi_soal}
+				<label for="jawaban2">Jawaban: </label>
+				<input type="text" id="jawaban2" name="jawaban2" value=""><br>
+				`;
+				
+				soal1.style.display = 'block';
+				soal2.style.display = 'block';
+				loading.style.display = 'none';
+            })
+            .catch(error => {
+				console.error(error);
+				console.log("Retrying in 10 seconds");
+				setTimeout(setSoal, 10000);
+			});
 		}
 	</script>
 </body>
