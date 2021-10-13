@@ -4292,6 +4292,7 @@ self.C3_GetObjectRefTable = function () {
 		C3.Behaviors.Tween.Cnds.OnTweensFinished,
 		C3.Plugins.Spritefont2.Acts.Destroy,
 		C3.Plugins.TextBox.Acts.SetCSSStyle,
+		C3.Plugins.Sprite.Acts.SetDefaultColor,
 		C3.Plugins.TextBox.Exps.Text,
 		C3.Plugins.Spritefont2.Acts.SetDefaultColor,
 		C3.Plugins.System.Exps.rgbex255,
@@ -4729,6 +4730,8 @@ self.C3_ExpressionFuncs = [
 		() => "4px solid white",
 		() => "border-radius",
 		() => "6px",
+		() => -365884825980927,
+		() => -281492157629439,
 		() => "background-color",
 		() => "white",
 		p => {
@@ -4747,6 +4750,7 @@ self.C3_ExpressionFuncs = [
 		() => "4px solid rgb(253, 117, 117)",
 		() => "rgb(255, 209, 209)",
 		() => "Username harus diisi",
+		() => "Username dan password harus diisi",
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			return () => f0(153, 255, 153);
