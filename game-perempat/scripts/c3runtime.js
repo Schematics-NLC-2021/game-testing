@@ -4249,7 +4249,7 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Mouse.Cnds.IsOverObject,
 		C3.ScriptsInEvents.Game_es_Event36_Act1,
 		C3.Plugins.System.Acts.AddVar,
-		C3.ScriptsInEvents.Game_es_Event38_Act1,
+		C3.ScriptsInEvents.Game_es_Event39_Act1,
 		C3.Plugins.Spritefont2.Cnds.CompareInstanceVar,
 		C3.Plugins.Date.Exps.Now,
 		C3.Plugins.Date.Exps.ToTimerHours,
@@ -4571,6 +4571,10 @@ self.C3_ExpressionFuncs = [
 			const n4 = p._GetNode(4);
 			return () => ((n0.ExpInstVar()) ? ("") : (((("\n" + "Tingkat kesulitan soal: ") + n1.ExpInstVar()) + ((((n2.ExpInstVar()) !== (n3.ExpInstVar()) ? 1 : 0)) ? ((" dan " + n4.ExpInstVar())) : ("")))));
 		},
+		() => 10,
+		() => "Menyimpan pos jawaban",
+		() => 11,
+		() => 15,
 		p => {
 			const v0 = p._GetNode(0).GetVar();
 			return () => Math.round(v0.GetValue());
@@ -4765,6 +4769,7 @@ self.C3_ExpressionFuncs = [
 			return () => f0(255, 153, 153);
 		},
 		() => "Login gagal, coba cek kembali username dan password",
+		() => "Login gagal",
 		() => "bgm",
 		() => "config",
 		p => {
@@ -4788,7 +4793,10 @@ self.C3_ExpressionFuncs = [
 			const f2 = p._GetNode(2).GetBoundMethod();
 			return () => f0(f1(f2(), 1, " "));
 		},
-		() => 0.2,
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			return () => and(Math.round((f0() * 100)), "%");
+		},
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			return () => f0(1, 2);

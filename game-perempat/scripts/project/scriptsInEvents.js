@@ -16,10 +16,10 @@ const scriptsInEvents = {
 			console.log("score soal diterima")
 		},
 
-		async Game_es_Event38_Act1(runtime, localVars)
+		async Game_es_Event39_Act1(runtime, localVars)
 		{
 			console.log(localVars.score)
-			console.log("score jawaban diterima")
+			console.log("score game diterima")
 		}
 
 };
