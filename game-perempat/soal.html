@@ -100,11 +100,11 @@
 				"jawaban": [
 					{
 						"soal_id": soal_id1,
-						"isi_jawaban": jawaban1 != "" ? jawaban1 : null
+						"isi_jawaban": jawaban1
 					},
 					{
 						"soal_id": soal_id2,
-						"isi_jawaban": jawaban2 != "" ? jawaban2 : null
+						"isi_jawaban": jawaban2
 					},
 				]
 			}
@@ -143,7 +143,7 @@
 					warning.innerHTML += `<p>Jawaban soal 2 anda ${score2 == benar2 ? "benar" : "salah"}</p>`
 				}
 				
-				parent.c3_callFunction("answerSent", [totalScore]);
+				parent.c3_callFunction("answerSent", [totalScore, soal_id1, soal_id2]);
             })
             .catch(error => {
 				console.error(error);
@@ -205,6 +205,8 @@
 				soal2.style.display = 'block';
 				submit.style.display = 'block';
 				loading.style.display = 'none';
+				
+				parent.c3_callFunction("setIdSoal", [soal_id1, soal_id2]);
             })
             .catch(error => {
 				console.error(error);
