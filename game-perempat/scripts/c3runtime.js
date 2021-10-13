@@ -4210,9 +4210,10 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Sprite.Acts.SetAnimFrame,
 		C3.Plugins.Sprite.Exps.AnimationFrame,
 		C3.Plugins.Sprite.Acts.SetScale,
-		C3.Plugins.Sprite.Cnds.IsOnLayer,
-		C3.Plugins.Sprite.Acts.MoveToTop,
 		C3.Plugins.System.Cnds.ForEachOrdered,
+		C3.Plugins.Sprite.Acts.MoveToTop,
+		C3.Plugins.Sprite.Cnds.PickDistance,
+		C3.Plugins.Sprite.Acts.ZMoveToObject,
 		C3.Plugins.Spritefont2.Cnds.IsOnLayer,
 		C3.Plugins.Spritefont2.Acts.MoveToTop,
 		C3.Plugins.System.Cnds.LayerVisible,
@@ -4237,7 +4238,9 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Mouse.Acts.SetCursor,
 		C3.Plugins.Sprite.Cnds.CompareFrame,
 		C3.Plugins.Sprite.Cnds.IsVisible,
+		C3.Plugins.Sprite.Cnds.IsOnLayer,
 		C3.Plugins.iframe.Acts.NavigateURL,
+		C3.Plugins.Arr.Acts.Push,
 		C3.Plugins.System.Cnds.PickAll,
 		C3.Plugins.Sprite.Exps.LayerName,
 		C3.Plugins.Sprite.Acts.SetVisible,
@@ -4245,7 +4248,6 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.iframe.Acts.DisplayHTMLString,
 		C3.Plugins.Mouse.Cnds.IsOverObject,
 		C3.ScriptsInEvents.Game_es_Event36_Act1,
-		C3.Plugins.Arr.Acts.Push,
 		C3.Plugins.System.Acts.AddVar,
 		C3.ScriptsInEvents.Game_es_Event38_Act1,
 		C3.Plugins.Spritefont2.Cnds.CompareInstanceVar,
@@ -4369,6 +4371,7 @@ self.C3_JsPropNameTable = [
 	{Audio: 0},
 	{posSign: 0},
 	{Rain: 0},
+	{SentSoal: 0},
 	{solid: 0},
 	{Z_Ordering: 0},
 	{link: 0},
@@ -4552,6 +4555,8 @@ self.C3_ExpressionFuncs = [
 			const n0 = p._GetNode(0);
 			return () => n0.ExpBehavior();
 		},
+		() => 2,
+		() => -2,
 		() => -20,
 		() => "",
 		p => {
@@ -4566,11 +4571,14 @@ self.C3_ExpressionFuncs = [
 			const n4 = p._GetNode(4);
 			return () => ((n0.ExpInstVar()) ? ("") : (((("\n" + "Tingkat kesulitan soal: ") + n1.ExpInstVar()) + ((((n2.ExpInstVar()) !== (n3.ExpInstVar()) ? 1 : 0)) ? ((" dan " + n4.ExpInstVar())) : ("")))));
 		},
-		() => 2,
+		p => {
+			const v0 = p._GetNode(0).GetVar();
+			return () => Math.round(v0.GetValue());
+		},
 		p => {
 			const v0 = p._GetNode(0).GetVar();
 			const v1 = p._GetNode(1).GetVar();
-			return () => (and(and(v0.GetValue(), ","), (v1.GetValue() - 10))).toString();
+			return () => (and(and(Math.round(v0.GetValue()), ","), (v1.GetValue() - 10))).toString();
 		},
 		p => {
 			const v0 = p._GetNode(0).GetVar();
@@ -4644,6 +4652,7 @@ self.C3_ExpressionFuncs = [
 		},
 		() => "posVisited",
 		() => "unsentScores",
+		() => "sentSoal",
 		() => "curPosition",
 		p => {
 			const v0 = p._GetNode(0).GetVar();
