@@ -7,7 +7,8 @@ const scriptsInEvents = {
 		{
 			sessionStorage.setItem("token", runtime.globalVars.token);
 			sessionStorage.setItem("curPos", runtime.globalVars.curPos);
-			sessionStorage.setItem("ApiBase", runtime.globalVars.baseUrl);
+			sessionStorage.setItem("apiBase", runtime.globalVars.baseUrl);
+			sessionStorage.setItem("team_id", runtime.globalVars.id_team);
 		},
 
 		async Game_es_Event36_Act1(runtime, localVars)

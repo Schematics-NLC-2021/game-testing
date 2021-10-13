@@ -60,6 +60,10 @@
           	40%), 0.8);
 			outline: 3px solid transparent;
 		}
+		
+		#submit {
+			display: none;
+		}
     </style>
 </head>
 
@@ -73,26 +77,86 @@
 		<div class="soal" id="soal2"></div>
 
 		<p>Peserta baru bisa kembali ke game utama setelah mensubmit jawaban. Kosongi kolom jawaban jika tidak ingin menjawab soal.</p>
-		<button onclick="sendAnswer()">Submit Jawaban</button>
+		<button id="submit" onclick="sendAnswer()">Submit Jawaban</button>
 
 		<p id="warning"></p>
 
 	</div>
 	<script>
+		let baseUrl, curPos, token, team_id, soal_id1, soal_id2, benar1, benar2;
+	
 		function sendAnswer() {
 			event.preventDefault();
+			
 			const jawaban1 = document.getElementById("jawaban1").value;
 			const jawaban2 = document.getElementById("jawaban2").value;
 			const warning = document.getElementById("warning");
-
-			warning.innerHTML = "Mengirim jawaban...";
-			parent.c3_callFunction("answerSent", [10]);
+			const submit = document.getElementById("submit");
+			
+			const link = `${baseUrl}/perempat/insert_jawaban_pos_soal`;
+			
+			const request = {
+				"team_id": team_id,
+				"jawaban": [
+					{
+						"soal_id": soal_id1,
+						"isi_jawaban": jawaban1 != "" ? jawaban1 : null
+					},
+					{
+						"soal_id": soal_id2,
+						"isi_jawaban": jawaban2 != "" ? jawaban2 : null
+					},
+				]
+			}
+			
+			warning.innerHTML = "Sedang mengirim jawaban...";
+			submit.style.display = 'none';
+			
+			fetch(link, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Accept': 'application/json',
+					'Authorization': 'Bearer ' + token
+				},
+				body: JSON.stringify(request)
+        	})
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+				
+                return response.json()
+            })
+            .then(responseBody => {
+				const score1 = responseBody.data[0].jawab_point;
+				const score2 = responseBody.data[1].jawab_point;
+				const totalScore = score1 + score2;
+				
+				warning.innerHTML = '<p>Jawaban berhasil dikirim</p>';
+				
+				if(jawaban1 != "") {
+					warning.innerHTML += `<p>Jawaban soal 1 anda ${score1 == benar1 ? "benar" : "salah"}</p>`
+				}
+				
+				if(jawaban2 != "") {
+					warning.innerHTML += `<p>Jawaban soal 2 anda ${score2 == benar2 ? "benar" : "salah"}</p>`
+				}
+				
+				parent.c3_callFunction("answerSent", [totalScore]);
+            })
+            .catch(error => {
+				console.error(error);
+				warning.innerHTML = "Gagal mengirim jawaban. Silahkan coba lagi";
+				submit.style.display = 'block';
+			});
 		}
 
 		function setSoal() {
-			const baseUrl = sessionStorage.getItem("ApiBase");
-			const curPos = sessionStorage.getItem("curPos");
-			const token = sessionStorage.getItem("token");
+			baseUrl = sessionStorage.getItem("apiBase");
+			curPos = sessionStorage.getItem("curPos");
+			token = sessionStorage.getItem("token");
+			team_id = sessionStorage.getItem("team_id");
 			
 			const link = `${baseUrl}/perempatsoal/pos/${curPos}`;
 			
@@ -111,9 +175,11 @@
                 return response.json()
             })
             .then(data => {
+				console.log(data);
                 const soal1 = document.getElementById("soal1");
                 const soal2 = document.getElementById("soal2");
 				const loading = document.getElementById("loading");
+				const submit = document.getElementById("submit");
 				
                 soal1.innerHTML = `
 				<h2>Soal 1</h2>
@@ -122,6 +188,9 @@
 				<input type="text" id="jawaban1" name="jawaban1" value=""><br>
 				`;
 				
+				soal_id1 = data[0].id;
+				benar1 = data[0].poin_benar;
+				
                 soal2.innerHTML = `
 				<h2>Soal 2</h2>
 				${data[1].isi_soal}
@@ -129,8 +198,12 @@
 				<input type="text" id="jawaban2" name="jawaban2" value=""><br>
 				`;
 				
+				soal_id2 = data[1].id;
+				benar2 = data[1].poin_benar;
+				
 				soal1.style.display = 'block';
 				soal2.style.display = 'block';
+				submit.style.display = 'block';
 				loading.style.display = 'none';
             })
             .catch(error => {
