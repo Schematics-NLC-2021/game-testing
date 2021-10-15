@@ -255,8 +255,8 @@
       <div class="soal-wrap">
         <div class="soal">
           <div class="pertanyaan">
-            <div class="no-soal">
-              <h2>Soal 1</h2>
+            <div class="no-soal" id="no-soal1">
+
             </div>
 
             <div class="isi-soal" id="soal1">
@@ -274,8 +274,8 @@
 
         <div class="soal">
           <div class="pertanyaan">
-            <div class="no-soal">
-              <h2>Soal 2</h2>
+            <div class="no-soal" id="no-soal2">
+
             </div>
 
             <div class="isi-soal" id="soal2"></div>
@@ -513,19 +513,19 @@
             console.log(data);
             const soal1 = document.getElementById("soal1");
             const soal2 = document.getElementById("soal2");
+			const noSoal1 = document.getElementById("no-soal1");
+            const noSoal2 = document.getElementById("no-soal2");
             const loading = document.getElementById("loading");
             const content = document.getElementById("content");
-
-            soal1.innerHTML = `
-					${data[0].isi_soal}
-					`;
+			
+			noSoal1.innerHTML = `<h2>Soal ${data[0].nomor_soal}<h2>`;
+            soal1.innerHTML = `${data[0].isi_soal}`;
 
             soal_id1 = data[0].id;
             benar1 = data[0].poin_benar;
-
-            soal2.innerHTML = `
-					${data[1].isi_soal}
-					`;
+			
+			noSoal2.innerHTML = `<h2>Soal ${data[1].nomor_soal}<h2>`;
+            soal2.innerHTML = `${data[1].isi_soal}`;
 
             soal_id2 = data[1].id;
             benar2 = data[1].poin_benar;
