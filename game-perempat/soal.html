@@ -347,7 +347,7 @@
         jawaban1.disabled = true;
         jawaban2.disabled = true;
 
-        console.log("Mengirim jawaban");
+//         console.log("Mengirim jawaban");
 
         fetch(link, {
           method: "POST",
@@ -366,13 +366,13 @@
             return response.json();
           })
           .then((responseBody) => {
-            console.log(responseBody);
+//             console.log(responseBody);
 
             const score1 = responseBody.data[0].jawab_point;
             const score2 = responseBody.data[1].jawab_point;
             const totalScore = score1 + score2;
 
-            warning.innerHTML = "Jawaban berhasil dikirim";
+            warning.innerHTML = "Jawaban berhasil dikirim. Silahkan tutup pos dan kembali ke permainan.";
 
             if (jawaban1.value == "") {
               jawaban1.style.backgroundColor = getComputedStyle(
@@ -493,7 +493,7 @@
 
         const link = `${baseUrl}/perempatsoal/pos/${curPos}`;
 
-        console.log("Mengambil soal");
+//         console.log("Mengambil soal");
 
         fetch(link, {
           headers: {
@@ -510,7 +510,7 @@
             return response.json();
           })
           .then((data) => {
-            console.log(data);
+//             console.log(data);
             const soal1 = document.getElementById("soal1");
             const soal2 = document.getElementById("soal2");
 			const noSoal1 = document.getElementById("no-soal1");

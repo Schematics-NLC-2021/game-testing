@@ -9,10 +9,10 @@ runOnStartup(async runtime =>
 	
 	runtime.addEventListener("beforeprojectstart", () => OnBeforeProjectStart(runtime));
 	
-// 	window.addEventListener('beforeunload', function (e) {
-// 	  e.preventDefault();
-// 	  e.returnValue = '';
-// 	});
+	window.addEventListener('beforeunload', function (e) {
+	  e.preventDefault();
+	  e.returnValue = '';
+	});
 });
 
 async function OnBeforeProjectStart(runtime)
